@@ -1,0 +1,1 @@
+En esta carpeta solo se guarda los archivos necesarios para levantar un servidor node
