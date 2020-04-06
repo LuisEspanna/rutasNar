@@ -1,0 +1,17 @@
+{
+  "name": "rutas_nar",
+  "version": "1.0.0",
+  "description": "Servidor que conecta postgres con la aplicacion android",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rutas"
+  ],
+  "author": "LuisEspanna",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
