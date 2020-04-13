@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">RutasNar</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="new_traveler">Sé un nuevo viajero</string>
+    <string name="traveler">Bienvenido, viajero</string>
+    <string name="welcome_msg">Consulta eventos y actividades, guárdalos según tus gustos y recorre Nariño</string>
+    <string name="terms">Si continúas, aceotas todos las condiciones de uso y las políticas de privacidad</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Login">Iniciar Sesión</string>
+    <string name="confirm_passwd">Confirmar contraseña</string>
+    <string name="register">Registrarme</string>
 </resources>
