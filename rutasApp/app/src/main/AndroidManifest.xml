@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ovsp.rutasnar">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="apps.udenar.edu.co.rutasnar">
 
     <application
         android:allowBackup="true"
@@ -8,8 +9,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".UserRegisterActivity"/>
+        <activity android:name=".UserLoginActivity" />
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

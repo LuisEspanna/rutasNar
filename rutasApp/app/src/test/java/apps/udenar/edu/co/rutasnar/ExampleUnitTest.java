@@ -1,4 +1,4 @@
-package com.ovsp.rutasnar;
+package apps.udenar.edu.co.rutasnar;
 
 import org.junit.Test;
 
