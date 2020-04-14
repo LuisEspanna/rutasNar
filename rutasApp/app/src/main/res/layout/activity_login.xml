@@ -1,52 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
-    android:gravity="center_horizontal">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="370dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="250dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="20dp"
-            android:hint="@string/welcome_msg" />
-        <Button
-            android:id="@+id/btn_newt"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="40dp"
-            android:hint="@string/new_traveler"/>
-
-        <Button
-            android:id="@+id/btn_t"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:hint="@string/traveler"/>
-
-    </LinearLayout>
+    android:orientation="vertical"
+    tools:context=".LoginActivity">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/terms"
+        android:padding="10sp"
         android:textAlignment="center"
-        android:hint="@string/terms"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_newt"
+        android:layout_width="250sp"
+        android:layout_height="44sp"
+        android:layout_marginTop="65dp"
+        android:background="@drawable/color_button"
+        android:drawableLeft="@drawable/ic_register"
+        android:drawablePadding="-30sp"
+        android:hint="@string/new_traveler"
+        android:paddingLeft="25sp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.306" />
+
+    <Button
+        android:id="@+id/btn_t"
+        android:layout_width="250sp"
+        android:layout_height="44sp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/color_button"
+        android:drawableLeft="@drawable/ic_singin"
+        android:drawablePadding="-30sp"
+        android:hint="@string/traveler"
+        android:paddingLeft="25sp"
+        android:textColor="#00FFFFFF"
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_newt" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#DA009289"
+        android:hint="@string/welcome_msg"
+        android:padding="15sp"
+        android:textColor="#00FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_banner" />
+
+    <ImageView
+        android:id="@+id/img_banner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/btn_dialog" />
 
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -19,6 +19,7 @@ public class UserLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
+        setTitle("Inicio de sesión");
 
 
         db = new DatabaseHelper(this);
