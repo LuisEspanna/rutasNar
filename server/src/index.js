@@ -1,38 +1,21 @@
-/*
-
-
-const { Pool } = require("pg");
-
-const config = {
-    user : 'postgres',
-    host : '192.168.219.71',
-    password : '1234',
-    database : 'RutasNar'
-};
-
-const pool = new Pool(config);
-
-const getRutas = async() => {
-    try {
-        const res = await pool.query("select * from usuarios;");
-        console.log(res.rows);
-        //Quitar despues
-        pool.end();
-    }catch (e){
-        console.log(e);
-    }
-}
-
-getRutas();
-*/
-
 const express = require("express");
 const app = express();
+var body_parser = require('body-parser');
 const port = 8880;
 
 //midleware
+app.use(express.static(__dirname));
+app.use(body_parser.urlencoded({extended:true}));
 app.use(express.json());
-app.use(express.urlencoded({extended:false}));
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+    next();
+});
+
 
 
 //Routes
