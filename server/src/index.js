@@ -28,6 +28,7 @@ getRutas();
 
 const express = require("express");
 const app = express();
+const port = 8880;
 
 //midleware
 app.use(express.json());
@@ -35,4 +36,6 @@ app.use(express.urlencoded({extended:false}));
 
 
 //Routes
-app.use('./src/routes/routes.js');
+app.use(require('./routes/routes.js'));
+
+app.listen(port);
