@@ -15,3 +15,7 @@ Se guardarán los esquemas SQL de la relaciones en tablas, ya sea formato imagen
 .xml.
 
 En caso de usar archivos .xml especificar el programa en el cual fue realizado.
+
+
+NOTA:
+Tener ciudado con el editor y poner en el git ignore las carpetas que no sean parte del proyecto
