@@ -4,8 +4,16 @@ const { validateUser } = require('../database/manager');
 const { getUsers } = require('../database/manager');
 const { getEvents } = require('../database/manager');
 const { getRoutes } = require('../database/manager');
+//----------------------------------------------------------Users
 const { newUser } = require('../database/manager');
 const { editUser } = require('../database/manager');
+
+//----------------------------------------------------------Muni
+const { getMuni } = require('../database/manager');
+const { newMuni } = require('../database/manager');
+const { editMuni } = require('../database/manager');
+const { deleteMuni } = require('../database/manager');
+
 const fs=require('fs');
 
 
@@ -39,6 +47,12 @@ router.delete('/api/users', newUser);
 //----------------------------------------------- Rutas
 
 //----------------------------------------------- Municipios
+router.get('/api/municipality', getMuni);
+router.post('/api/municipality', newMuni);
+router.put('/api/municipality', editMuni);
+router.delete('/api/municipality', deleteMuni);
+
+
 router.get('/municipios', async (req, res)=>{
     try {
         fs.readFile('./src/html/municipios.html', (err, html)=>{

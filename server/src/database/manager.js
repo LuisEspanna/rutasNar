@@ -2,7 +2,7 @@ const { Pool } = require("pg");
 
 const config = {
     user : 'postgres',
-    host : '172.18.2.21',
+    host : '181.55.121.253',
     password : '1234',
     database : 'RutasNar'
 };
@@ -96,14 +96,71 @@ const deleteUser = async(req, res)=>{
 
 
 //------------------------------------------------------- Events
+//------------------------------------------------------- Events
+//------------------------------------------------------- Actividades
+//------------------------------------------------------- Municipios
+const getMuni = async(req, res)=>{
+    try {
+        console.log("Municipio:\n" + req.body);
+        let str_query = `SELECT * FROM MUNICIPIOS`;
+        const response = await pool.query(str_query);
+        res.status(200).json(response.rows);
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
+const newMuni = async(req, res)=>{
+    try {
+        console.log("Municipio:\n" + req.body);
+        let json = req.body;
+        let id = new Date();
+        id = id.getTime();
+        let str_query = `INSERT INTO MUNICIPIOS(ID_MUNICIPIO, NOM_MUNICIPIO, LATITUD, LONGITUD) VALUES
+        ('${id}', '${json.nom_municipio}', '${json.latitud}', '${json.longitud}')`;
+        const response = await pool.query(str_query);
+        console.log(response);
+        res.send("INSERTED");
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
+const editMuni = async(req, res)=>{
+    try {
+        console.log("Municipio:\n" + req.body);
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
+const deleteMuni = async(req, res)=>{
+    try {
+        console.log("Municipio:\n" + req.body);
+        let json = req.body;
+        let str_query = `DELETE FROM MUNICIPIOS WHERE ID_MUNICIPIO LIKE '${json.id_municipio}'`;
+        const response = await pool.query(str_query);
+        console.log(response);
+        res.send("DELETED");
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
 
 module.exports = {
     validateUser,
     getUsers,
     getEvents,
     getRoutes, 
+
     newUser, 
     editUser,
-    deleteUser
+    deleteUser,
+
+    getMuni,
+    newMuni, 
+    editMuni,
+    deleteMuni
 }
 
