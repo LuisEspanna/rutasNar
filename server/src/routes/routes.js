@@ -4,12 +4,18 @@ const { validateUser } = require('../database/manager');
 const { getUsers } = require('../database/manager');
 const { getEvents } = require('../database/manager');
 const { getRoutes } = require('../database/manager');
-const { newData } = require('../database/manager');
-const { editData } = require('../database/manager');
+const { newUser } = require('../database/manager');
+const { editUser } = require('../database/manager');
+const fs=require('fs');
+
 
 router.get("/", async (req, res)=>{
     try {
-        res.send("Servidor Node funcionando :D");
+        fs.readFile('./src/html/index.html', (err, html)=>{
+            if(err)throw err;
+            res.write(html);
+            res.end();
+        });
     } catch (e) {
         console.log("Error");
     }
@@ -18,19 +24,31 @@ router.get("/", async (req, res)=>{
 //--Verificar si el usuario está en la base
 router.post('/loggin', validateUser);
 
-// Registrar nuevo (depende del header:) 
-router.post('/register', newData);
 
-// Editar nuevo (depende del header:) 
-router.post('/edit', editData);
+/*
+    post: Crear
+    put: Editar
+    delete: Eliminar
+*/
+//----------------------------------------------- Usuarios
+router.post('/api/users', newUser);
+router.put('/api/users', editUser);
+router.delete('/api/users', newUser);
+//----------------------------------------------- Eventos
 
-// Retorna un JsonArray de los usuarios en base
-router.get('/users', getUsers);
+//----------------------------------------------- Rutas
 
-// Retorna un JsonArray de los eventos en base
-router.get('/events', getEvents);
-
-// Retorna un JsonArray de las rutas en base
-router.get('/routes', getRoutes);
+//----------------------------------------------- Municipios
+router.get('/municipios', async (req, res)=>{
+    try {
+        fs.readFile('./src/html/municipios.html', (err, html)=>{
+            if(err)throw err;
+            res.write(html);
+            res.end();
+        });
+    } catch (e) {
+        console.log("Error");
+    }
+});
 
 module.exports = router;

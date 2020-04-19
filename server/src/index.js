@@ -1,12 +1,18 @@
 const express = require("express");
 const app = express();
 var body_parser = require('body-parser');
+const morgan = require('morgan');
+
+
 const port = 8880;
+
 
 //midleware
 app.use(express.static(__dirname));
 app.use(body_parser.urlencoded({extended:true}));
 app.use(express.json());
+
+app.use(morgan('dev'));
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');

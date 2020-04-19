@@ -18,7 +18,7 @@ const validateUser = async(req, res)=>{
                 let str_query = `SELECT * FROM USUARIOS WHERE nom_usuario like '${jsonInfo.user}' and clave_usuario like '${jsonInfo.password}'`;
                 //console.log(str_query);
                 const response = await pool.query(str_query);
-                console.log(response.rows[0]);
+                
                 if(response.rows[0] === undefined){
                     res.status(400).send("404"); 
                 }else res.status(200).json(response.rows[0].id_usuario);
@@ -69,8 +69,8 @@ const getRoutes = async(req, res)=>{
 } 
 
 
-//--------------------------------------------------- DATA
-const newData = async(req, res)=>{
+//--------------------------------------------------- USERS
+const newUser = async(req, res)=>{
     try {
         console.log(req.body);
     } catch (e) {
@@ -78,7 +78,7 @@ const newData = async(req, res)=>{
     }    
 } 
 
-const editData = async(req, res)=>{
+const editUser = async(req, res)=>{
     try {
         console.log(req.body);
     } catch (e) {
@@ -86,13 +86,24 @@ const editData = async(req, res)=>{
     }    
 } 
 
+const deleteUser = async(req, res)=>{
+    try {
+        console.log(req.body);
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
+
+//------------------------------------------------------- Events
 
 module.exports = {
     validateUser,
     getUsers,
     getEvents,
     getRoutes, 
-    newData, 
-    editData
+    newUser, 
+    editUser,
+    deleteUser
 }
 

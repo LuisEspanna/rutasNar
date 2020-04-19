@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            height: 30px;
+        }
+        li{
+            display: inline-block;
+            padding:10px;
+            width: 130px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="listado">
+        <ul id="parent">
+            <li>IDENTIFICADOR</li>
+            <li>NOMBRE</li>
+            <li>LATITUD</li>
+            <li>LONGITUD</li>
+        </ul>
+    </div>
+    </br>
+    <div>
+        <input type="text" id="txt_nombre" placeholder="Nombre municipio"></br>
+        <input type="text" id="txt_latitud" placeholder="Latitud"></br>
+        <input type="text" id="txt_longitud" placeholder="Longitud"></br>
+        <input type="button" value="Guardar" id="btn_guardar"></br>
+    </div>
+</body>
+<script>
+    function httpPost(theUrl, jsonData){
+    var http = new XMLHttpRequest();
+        http.open("POST", theUrl, true);
+        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+                //aqui obtienes la respuesta de tu peticion
+                eval(jsonData.funcion + "(" + http.responseText + ")");
+            }
+        }
+        http.send(JSON.stringify(jsonData));
+    }
+
+    function main(){
+        llenarListado();
+    }
+
+    var btn_guardar = document.getElementById("btn_guardar");
+    btn_guardar.onclick = function(e){
+        let nom = document.getElementById("txt_nombre").value;
+        let lat = document.getElementById("txt_latitud").value;
+        let lon = document.getElementById("txt_longitud").value;
+
+        
+        if(nom.length == 0 || lat.length == 0 || lon.length == 0){
+            alert("llenar todos los campos");
+            return;
+        }
+
+        let json = {
+            nom_municipio : nom,
+            latitud : lat,
+            longitud : lon
+        }
+
+        alert(JSON.stringify(json));
+    }
+
+    function llenarListado(){
+        let listado = document.getElementById("listado");
+
+        let json = {
+            id_municipio : "11456674751",
+            nom_municipio : "Pasto",
+            latitud : "1.2",
+            longitud : "-71.11456"
+        }
+        listado.appendChild(elementoLista(json));
+    }
+
+    function elementoLista(json){
+        let parent = document.createElement("ul");
+        let id_municipio = document.createElement("li");
+        id_municipio.innerHTML = json.id_municipio;
+        let nom_municipio = document.createElement("li");
+        nom_municipio.innerHTML = json.nom_municipio;
+        let latitud = document.createElement("li");
+        latitud.innerHTML = json.latitud;
+        let longitud = document.createElement("li");
+        longitud.innerHTML = json.longitud;
+        parent.appendChild(id_municipio);
+        parent.appendChild(nom_municipio);
+        parent.appendChild(latitud);
+        parent.appendChild(longitud);
+        return parent;
+    }
+
+    main();
+</script>
+</html>
