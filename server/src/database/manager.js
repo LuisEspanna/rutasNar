@@ -93,7 +93,17 @@ const getEvents = async(req, res)=>{
     }    
 } 
 
-
+const newEvents = async(req, res)=>{
+    try {
+        console.log("Evento:\n" + JSON.stringify(req.body));
+        console.log(req.file);
+        //const response = await pool.query("SELECT * FROM EVENTOS");
+        //console.log(response);
+        res.send('Evento Agregado');
+    } catch (e) {
+        console.log(e);
+    }    
+} 
 
 //------------------------------------------------------- Actividades
 //------------------------------------------------------- Municipios
@@ -150,7 +160,6 @@ const deleteMuni = async(req, res)=>{
 module.exports = {
     validateUser,
     getUsers,
-    getEvents,
     getRoutes, 
 
     newUser, 
@@ -160,6 +169,9 @@ module.exports = {
     getMuni,
     newMuni, 
     editMuni,
-    deleteMuni
+    deleteMuni,
+
+    getEvents,
+    newEvents
 }
 

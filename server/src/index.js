@@ -2,10 +2,17 @@ const express = require("express");
 const app = express();
 var body_parser = require('body-parser');
 const morgan = require('morgan');
-
+const multer = require('multer');
+const path = require('path');
 
 const port = 8880;
 
+const storage = multer.diskStorage({
+    destination:path.join(__dirname,'public/uploads'),
+    filename : (req, file, cb) => {
+        cb(null, file.originalname);
+    }
+});
 
 //midleware
 app.use(express.static(__dirname));
@@ -22,7 +29,10 @@ app.use((req, res, next) => {
     next();
 });
 
-
+app.use(multer({
+    storage,
+    dest: path.join(__dirname,'public/uploads')
+}).single('imagen'));
 
 //Routes
 app.use(require('./routes/routes.js'));

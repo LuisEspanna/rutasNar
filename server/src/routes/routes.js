@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const { validateUser } = require('../database/manager');
 const { getUsers } = require('../database/manager');
-const { getEvents } = require('../database/manager');
+
 const { getRoutes } = require('../database/manager');
 //----------------------------------------------------------Users
 const { newUser } = require('../database/manager');
@@ -15,6 +15,9 @@ const { editMuni } = require('../database/manager');
 const { deleteMuni } = require('../database/manager');
 
 //---------------------------------------------------------- Eventos
+const { getEvents } = require('../database/manager');
+const { newEvents } = require('../database/manager');
+
 
 
 const fs=require('fs');
@@ -45,9 +48,10 @@ router.post('/loggin', validateUser);
 router.post('/api/users', newUser);
 router.put('/api/users', editUser);
 router.delete('/api/users', newUser);
-//----------------------------------------------- Eventos
 
 //----------------------------------------------- Rutas
+
+//----------------------------------------------- Eventos
 router.get('/eventos', async (req, res)=>{
     try {
         fs.readFile('./src/html/eventos.html', (err, html)=>{
@@ -61,6 +65,7 @@ router.get('/eventos', async (req, res)=>{
 });
 
 router.get('/api/events', getEvents);
+router.post('/api/events', newEvents);
 
 //----------------------------------------------- Municipios
 router.get('/api/municipality', getMuni);

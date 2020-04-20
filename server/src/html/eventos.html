@@ -42,33 +42,34 @@
     </div>
     
     <br />
-    <div>
+    <form action="/api/events" method="POST" enctype="multipart/form-data">
         <div>Municipio</div>
-        <select id="cbx_municipios" name="municipios">
+        <select id="cbx_municipios" name="id_municipio">
             
         </select></br>
-        <input type="text" id="txt_nombre" placeholder="Nombre evento"><br />
-        <textarea id="txt_desc" cols="50" rows="10" placeholder="Descripcion"></textarea><br />
+        <input type="text" id="txt_nombre" placeholder="Nombre evento" name="nom_evento"><br />
+        <textarea id="txt_desc" cols="50" rows="10" placeholder="Descripcion" name="desc_evento"></textarea><br />
         
-        <input name="file-input" id="image_input" type="file" /><br />
+        <input name="imagen" id="image_input" type="file" /><br />
         <img id="imgSalida" width="50%" height="50%" src="" /><br />
 
-        <input type="date" name="fecha" id="txt_fecha"><br />
+        <input type="date" name="fecha_evento" id="txt_fecha"><br />
         <div>Disponible</div>
-        <select id="cbx_municipios" name="municipios">
+        <select id="cbx_disponible" name="disponible">
             <option value="true">SI</option>
             <option value="false">NO</option>
         </select></br>
-        <input type="text" id="txt_latitud" placeholder="Latitud"><br />
-        <input type="text" id="txt_longitud" placeholder="Longitud"><br />
-        <input type="button" value="Guardar" id="btn_guardar"></br>
-    </div>
+        <input type="text" id="txt_latitud" placeholder="Latitud" name="latitud"><br />
+        <input type="text" id="txt_longitud" placeholder="Longitud" name="longitud"><br />
+        <input type="submit" value="Guardar" id="btn_guardar1"></br>
+    </form>
 </body>
 <script>
     const URL_SERVER = "/api/events";
 
 
     //----------------------------------- Visualizar imagen
+    
     var image_input = document.getElementById("image_input");
     image_input.oninput = function(e){
         var file = e.target.files[0],
@@ -92,26 +93,7 @@
         actualizarListado();
     }
 
-    var btn_guardar = document.getElementById("btn_guardar");
-    btn_guardar.onclick = function(e){
-        let id_munic = document.getElementById("cbx_municipios").value;
-        let nom = document.getElementById("txt_nombre");
-        let lat = document.getElementById("txt_latitud");
-        let lon = document.getElementById("txt_longitud");
-
-
-        let jsonData = {
-            
-            latitud : lat.value,
-            longitud : lon.value
-        }
-
-        //crearMunicipio(jsonData);
-        nom.value = "";
-        lat.value = "";
-        lon.value = "";
-    }
-
+    
     async function actualizarListado(){
         limpiarListado();
         let listado = document.getElementById("listado");
@@ -200,9 +182,9 @@
 
     //------------------------------------------------------------------------------- Crear
     function crearEvento(jsonData) {
-        /*
+        
         let http = new XMLHttpRequest();
-        http.open("POST", URL_SERVER, true);
+        http.open("POST", "/api/events", true);
         http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         http.onreadystatechange = function () {
             if (http.readyState == 4 && http.status == 200) {
@@ -210,7 +192,7 @@
             }
         }
         http.send(JSON.stringify(jsonData));
-        */
+        
     }
 
 
