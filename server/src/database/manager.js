@@ -95,11 +95,29 @@ const getEvents = async(req, res)=>{
 
 const newEvents = async(req, res)=>{
     try {
-        console.log("Evento:\n" + JSON.stringify(req.body));
-        console.log(req.file);
-        //const response = await pool.query("SELECT * FROM EVENTOS");
-        //console.log(response);
-        //res.send('Evento Agregado');
+        //console.log("Evento:\n" + JSON.stringify(req.body));
+        let json = req.body;
+        let id = new Date();
+        id = id.getTime();
+        let str_query = `INSERT INTO 
+        EVENTOS(id_evento, id_municipio, nom_evento, desc_evento, img_evento, fecha_evento, disponible, latitud, longitud) VALUES 
+        ('${id}','${json.id_municipio}','${json.nom_evento}','${json.desc_evento}','${req.file.originalname}','${json.fecha_evento}','${json.disponible}','${json.latitud}', '${json.longitud}');`;
+        //console.log(req.file);
+        const response = await pool.query(str_query);
+        console.log(response);
+        res.render('regresar.ejs', {title:'Evento', message:"Evento creado exitosamente", str_url:'/eventos'});
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
+const deleteEvents = async(req, res)=>{
+    try {
+        
+        let str_query = `DELETE FROM EVENTOS WHERE id_evento like '${req.body.id_evento}'`;
+        //console.log(req.file);
+        const response = await pool.query(str_query);
+        console.log(response);
         res.render('regresar.ejs', {title:'Evento', message:"Evento creado exitosamente", str_url:'/eventos'});
     } catch (e) {
         console.log(e);
@@ -173,6 +191,7 @@ module.exports = {
     deleteMuni,
 
     getEvents,
-    newEvents
+    newEvents,
+    deleteEvents
 }
 

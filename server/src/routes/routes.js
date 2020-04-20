@@ -8,6 +8,7 @@ const { getRoutes } = require('../database/manager');
 const { newUser } = require('../database/manager');
 const { editUser } = require('../database/manager');
 
+
 //----------------------------------------------------------Muni
 const { getMuni } = require('../database/manager');
 const { newMuni } = require('../database/manager');
@@ -17,7 +18,7 @@ const { deleteMuni } = require('../database/manager');
 //---------------------------------------------------------- Eventos
 const { getEvents } = require('../database/manager');
 const { newEvents } = require('../database/manager');
-
+const { deleteEvents } = require('../database/manager');
 
 
 const fs=require('fs');
@@ -47,7 +48,7 @@ router.post('/loggin', validateUser);
 //----------------------------------------------- Usuarios
 router.post('/api/users', newUser);
 router.put('/api/users', editUser);
-router.delete('/api/users', newUser);
+//router.delete('/api/users', newUser);
 
 //----------------------------------------------- Rutas
 
@@ -66,6 +67,7 @@ router.get('/eventos', async (req, res)=>{
 
 router.get('/api/events', getEvents);
 router.post('/api/events', newEvents);
+router.delete('/api/events', deleteEvents);
 
 //----------------------------------------------- Municipios
 router.get('/api/municipality', getMuni);
