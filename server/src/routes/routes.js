@@ -14,6 +14,9 @@ const { newMuni } = require('../database/manager');
 const { editMuni } = require('../database/manager');
 const { deleteMuni } = require('../database/manager');
 
+//---------------------------------------------------------- Eventos
+
+
 const fs=require('fs');
 
 
@@ -45,6 +48,19 @@ router.delete('/api/users', newUser);
 //----------------------------------------------- Eventos
 
 //----------------------------------------------- Rutas
+router.get('/eventos', async (req, res)=>{
+    try {
+        fs.readFile('./src/html/eventos.html', (err, html)=>{
+            if(err)throw err;
+            res.write(html);
+            res.end();
+        });
+    } catch (e) {
+        console.log("Error");
+    }
+});
+
+router.get('/api/events', getEvents);
 
 //----------------------------------------------- Municipios
 router.get('/api/municipality', getMuni);

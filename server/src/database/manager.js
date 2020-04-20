@@ -40,20 +40,6 @@ const getUsers = async(req, res)=>{
     }    
 } 
 
-const getEvents = async(req, res)=>{
-    try {
-        let jsonInfo = req.body;
-        if(jsonInfo.header != null && jsonInfo.user != null && jsonInfo.password != null){
-            console.log(req.body);
-            let str_query = `SELECT * FROM USUARIOS WHERE nom_usuario like '${jsonInfo.user}' and clave_usuario like '${jsonInfo.password}'`;
-            const response = await pool.query(str_query);
-            res.status(200).json(response.rows);
-        }else res.send("Error :(");
-    } catch (e) {
-        console.log(e);
-    }    
-} 
-
 const getRoutes = async(req, res)=>{
     try {
         let jsonInfo = req.body;
@@ -96,7 +82,19 @@ const deleteUser = async(req, res)=>{
 
 
 //------------------------------------------------------- Events
-//------------------------------------------------------- Events
+const getEvents = async(req, res)=>{
+    try {
+        console.log(req.body);
+        let str_query = `SELECT * FROM EVENTOS`;
+        const response = await pool.query(str_query);
+        res.status(200).json(response.rows);
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
+
+
 //------------------------------------------------------- Actividades
 //------------------------------------------------------- Municipios
 const getMuni = async(req, res)=>{
@@ -146,6 +144,7 @@ const deleteMuni = async(req, res)=>{
         console.log(e);
     }    
 } 
+
 
 
 module.exports = {

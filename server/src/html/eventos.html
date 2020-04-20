@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            height: 30px;
+        }
+        li{
+            display: inline-block;
+            padding:10px;
+            width: 100px;
+            height: 30px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <p>EVENTOS</p>
+    </br>
+    </br>
+    <ul id="parent">
+        <li>IDENTIFICADOR</li>
+        <li>ID_MUNICIPIO</li>
+        <li>NOM_EVENTO</li>
+        <li>DESC_EVENTO</li>
+        <li>IMAGEN</li>
+        <li>FECHA EVENTO</li>
+        <li>DISPONIBLE</li>
+        <li>LATITUD</li>
+        <li>LONGITUD</li>
+    </ul>
+    <div id="tabla">
+        <div id="listado">
+        
+        </div>
+    </div>
+    
+    <br />
+    <div>
+        <div>Municipio</div>
+        <select id="cbx_municipios" name="municipios">
+            
+        </select></br>
+        <input type="text" id="txt_nombre" placeholder="Nombre evento"><br />
+        <textarea id="txt_desc" cols="50" rows="10" placeholder="Descripcion"></textarea><br />
+        
+        <input name="file-input" id="image_input" type="file" /><br />
+        <img id="imgSalida" width="50%" height="50%" src="" /><br />
+
+        <input type="date" name="fecha" id="txt_fecha"><br />
+        <div>Disponible</div>
+        <select id="cbx_municipios" name="municipios">
+            <option value="true">SI</option>
+            <option value="false">NO</option>
+        </select></br>
+        <input type="text" id="txt_latitud" placeholder="Latitud"><br />
+        <input type="text" id="txt_longitud" placeholder="Longitud"><br />
+        <input type="button" value="Guardar" id="btn_guardar"></br>
+    </div>
+</body>
+<script>
+    const URL_SERVER = "/api/events";
+
+
+    //----------------------------------- Visualizar imagen
+    var image_input = document.getElementById("image_input");
+    image_input.oninput = function(e){
+        var file = e.target.files[0],
+        imageType = /image.*/;
+
+        if (!file.type.match(imageType)) return;
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var result = e.target.result;
+            let img_salida = document.getElementById("imgSalida");
+            img_salida.setAttribute("src", result);
+            img_salida.setAttribute("style", "width: 450px;")
+        };
+        reader.readAsDataURL(file);
+    }
+    //----------------------------------- Fin visualizar imagen
+
+    function main(){
+        actualizarCbx();
+        actualizarListado();
+    }
+
+    var btn_guardar = document.getElementById("btn_guardar");
+    btn_guardar.onclick = function(e){
+        let id_munic = document.getElementById("cbx_municipios").value;
+        let nom = document.getElementById("txt_nombre");
+        let lat = document.getElementById("txt_latitud");
+        let lon = document.getElementById("txt_longitud");
+
+
+        let jsonData = {
+            
+            latitud : lat.value,
+            longitud : lon.value
+        }
+
+        //crearMunicipio(jsonData);
+        nom.value = "";
+        lat.value = "";
+        lon.value = "";
+    }
+
+    async function actualizarListado(){
+        limpiarListado();
+        let listado = document.getElementById("listado");
+        const http = new XMLHttpRequest();
+        http.open("GET", URL_SERVER);
+        http.onreadystatechange = function(){
+
+        if (this.readyState == 4 && this.status == 200) {
+                var resultado = JSON.parse(this.responseText);
+                resultado.forEach(element => {
+                    listado.appendChild(elementoLista(element));
+                });
+            }
+        }
+        http.send();
+    }
+
+    function limpiarListado(){
+        let tabla = document.getElementById("tabla");
+        let listado = document.getElementById("listado");
+        tabla.removeChild(listado);
+        listado = document.createElement("div");
+        listado.setAttribute("id", "listado");
+        tabla.appendChild(listado);
+    }
+
+
+    function elementoLista(json){
+        let parent = document.createElement("ul");
+        let id_evento = document.createElement("li");
+        let id_municipio = document.createElement("li");
+        let nom_evento = document.createElement("li");
+        let desc_evento = document.createElement("li");
+        let imagen = document.createElement("li");
+        let fecha = document.createElement("li");
+        let disponible = document.createElement("li");
+        let latitud = document.createElement("li");
+        let longitud = document.createElement("li");
+        let btn_eliminar = document.createElement("input");
+        //--------------------------------------------------------------------------------
+        id_evento.innerHTML = json.id_evento;
+        id_municipio.innerHTML = json.id_municipio;
+        nom_evento.innerHTML = json.nom_evento;
+        desc_evento.innerHTML = json.desc_evento.substr(0,10)+"...";
+        imagen.innerHTML = json.imagen;
+        fecha.innerHTML = json.fecha;
+        disponible.innerHTML = json.disponible;
+        latitud.innerHTML = json.latitud;
+        longitud.innerHTML = json.longitud;
+       
+        //--------------------------------------------------------------------------------
+        btn_eliminar.setAttribute("onclick", "eliminarEvento("+json.id_evento+")");
+        btn_eliminar.setAttribute("value", "Eliminar");
+        btn_eliminar.setAttribute("type", "button");
+        parent.appendChild(id_evento);
+        parent.appendChild(id_municipio);
+        parent.appendChild(nom_evento);
+        parent.appendChild(desc_evento);
+        parent.appendChild(imagen);
+        parent.appendChild(fecha);
+        parent.appendChild(disponible);
+        parent.appendChild(latitud);
+        parent.appendChild(longitud);
+        parent.appendChild(btn_eliminar);
+        parent.setAttribute("name", "muni_element");
+        return parent;
+    }
+
+    function actualizarCbx() {
+        let cbx_municipios = document.getElementById("cbx_municipios");
+        const http = new XMLHttpRequest();
+        http.open("GET", "/api/municipality");
+        http.onreadystatechange = function(){
+            if (this.readyState == 4 && this.status == 200) {
+                var resultado = JSON.parse(this.responseText);
+                resultado.forEach(element => {
+                    let son = document.createElement("option");
+                    son.setAttribute("value", element.id_municipio);
+                    son.innerHTML = element.nom_municipio;
+                    cbx_municipios.appendChild(son);
+                });
+            }
+        }
+        http.send();
+    }
+
+    //------------------------------------------------------------------------------- Crear
+    function crearEvento(jsonData) {
+        /*
+        let http = new XMLHttpRequest();
+        http.open("POST", URL_SERVER, true);
+        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+                actualizarListado();
+            }
+        }
+        http.send(JSON.stringify(jsonData));
+        */
+    }
+
+
+    //------------------------------------------------------------------------------- Eliminar
+    function eliminarEvento(id){
+        /*
+        let jsonData = {
+            id_municipio: id
+        };
+        let http = new XMLHttpRequest();
+        http.open("DELETE", URL_SERVER, true);
+        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+                actualizarListado();
+            }
+        }
+        http.send(JSON.stringify(jsonData));
+        */
+    }
+
+
+
+    main();
+</script>
+</html>
