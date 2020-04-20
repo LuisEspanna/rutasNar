@@ -99,7 +99,8 @@ const newEvents = async(req, res)=>{
         console.log(req.file);
         //const response = await pool.query("SELECT * FROM EVENTOS");
         //console.log(response);
-        res.send('Evento Agregado');
+        //res.send('Evento Agregado');
+        res.render('regresar.ejs', {title:'Evento', message:"Evento creado exitosamente", str_url:'/eventos'});
     } catch (e) {
         console.log(e);
     }    

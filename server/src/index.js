@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const multer = require('multer');
 const path = require('path');
 
+
 const port = 8880;
 
 const storage = multer.diskStorage({
@@ -20,6 +21,8 @@ app.use(body_parser.urlencoded({extended:true}));
 app.use(express.json());
 
 app.use(morgan('dev'));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
