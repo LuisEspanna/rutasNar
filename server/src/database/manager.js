@@ -2,7 +2,7 @@ const { Pool } = require("pg");
 
 const config = {
     user : 'postgres',
-    host : '181.55.121.253',
+    host : 'localhost',
     password : '1234',
     database : 'RutasNar'
 };
@@ -87,7 +87,9 @@ const getEvents = async(req, res)=>{
         console.log(req.body);
         let str_query = `SELECT * FROM EVENTOS`;
         const response = await pool.query(str_query);
-        res.status(200).json(response.rows);
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200);
+        res.json(response.rows);
     } catch (e) {
         console.log(e);
     }    
