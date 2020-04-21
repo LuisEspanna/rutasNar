@@ -5,6 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +16,13 @@ import java.util.List;
 import java.util.Map;
 
 import apps.udenar.edu.co.rutasnar.adapters.EventAdapter;
+import apps.udenar.edu.co.rutasnar.interfaces.RutasNarAPI;
 import apps.udenar.edu.co.rutasnar.model.Event;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EventsActivity extends AppCompatActivity {
 
@@ -45,9 +55,39 @@ public class EventsActivity extends AppCompatActivity {
         mapInfo.put("latitud", "1.2");
         mapInfo.put("longitud", "-77.234");
 
-        eventList.add(new Event(mapInfo));
+        //eventList.add(new Event(mapInfo));
 
-        eventAdapter = new EventAdapter(EventsActivity.this,eventList);
-        recyclerEvents.setAdapter(eventAdapter);
+        getEvents();
+    }
+
+    private void getEvents(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://181.55.121.253:8880/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RutasNarAPI rutasNarAPI = retrofit.create(RutasNarAPI.class);
+        Call<List<Event>> call = rutasNarAPI.getEvents();
+
+        call.enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                if(!response.isSuccessful()){
+                    Log.d("NOTICIAS", "onResponse: " + response);
+                    Toast.makeText(EventsActivity.this, "Error", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                eventList.clear();
+                eventList.addAll(response.body());
+                eventAdapter = new EventAdapter(EventsActivity.this,eventList);
+                recyclerEvents.setAdapter(eventAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable t) {
+
+            }
+        });
     }
 }
