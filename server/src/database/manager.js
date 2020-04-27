@@ -218,7 +218,8 @@ const editRoutes = async(req, res)=>{
 const deleteRoutes = async(req, res)=>{
     try {
         let str_query = `DELETE FROM RUTAS WHERE id_ruta like '${req.body.id_ruta}'`;
-        const response = await pool.query(str_query);
+        const response = await pool.query(`DELETE FROM COORDENADAS WHERE id_ruta like '${req.body.id_ruta}'`);
+        pool.query(str_query);
         res.send("DELETED");
     } catch (e) {
         console.log(e);
