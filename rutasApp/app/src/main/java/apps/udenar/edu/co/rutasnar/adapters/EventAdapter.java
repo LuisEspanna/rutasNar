@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import apps.udenar.edu.co.rutasnar.R;
@@ -80,7 +79,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             btn_item_favorite = itemView.findViewById(R.id.btn_item_favorite);
             txt_item_title = itemView.findViewById(R.id.txt_item_title);
             txt_item_description = itemView.findViewById(R.id.txt_item_description);
-            txt_item_date = itemView.findViewById(R.id.txt_item_date);
+            txt_item_date = itemView.findViewById(R.id.txt_item_time);
             btn_item_more  = itemView.findViewById(R.id.btn_item_more);
         }
     }

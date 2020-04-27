@@ -38,7 +38,8 @@ public class LoginActivity extends AppCompatActivity {
         btn_newt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,UserRegisterActivity.class));
+                //startActivity(new Intent(LoginActivity.this,UserRegisterActivity.class));
+                startActivity(new Intent(LoginActivity.this,RoutesActivity.class));
             }
         });
 
