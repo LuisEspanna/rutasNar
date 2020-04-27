@@ -182,7 +182,14 @@ const newRoutes = async(req, res)=>{
         let str_query = `INSERT INTO RUTAS(ID_RUTA, ID_MUNICIPIO, NOM_RUTA, DESC_RUTA, IMG_RUTA, TIEMPO_RUTA) VALUES
         ('${id}', '${json.id_municipio}', '${json.nom_ruta}', '${json.desc_ruta}', '${req.file.originalname}', '${json.tiempo_ruta} ${json.tipo_tiempo}')`;
         const response = await pool.query(str_query);
-        console.log(response);
+        
+        let coord = eval(json.txt_coordenadas);
+        coord.forEach(elem => {
+            str_query = `select nuevaCoordenada('${id}', '${elem.lat}', '${elem.lon}');`;
+            pool.query(str_query);
+            console.log(str_query);
+        });
+        
         res.render('regresar.ejs', {title:'Rutas', message:"Ruta creada exitosamente", str_url:'/rutas'});
     } catch (e) {
         console.log(e);
