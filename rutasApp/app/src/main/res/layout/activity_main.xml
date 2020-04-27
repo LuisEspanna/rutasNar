@@ -7,18 +7,18 @@
     tools:context=".MainActivity">
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/floatingActionsMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
         app:fab_addButtonColorNormal="@color/colorAccent"
         app:fab_addButtonColorPressed="@color/colorPrimaryDark"
         app:fab_addButtonPlusIconColor="#FFFFFF"
         app:fab_expandDirection="up"
         app:fab_labelStyle="@style/custom_fab"
-        app:fab_labelsPosition="right"
+        app:fab_labelsPosition="left"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/action1"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             app:fab_colorNormal="#8500B5"
             app:fab_colorPressed="#7F01C3"
-            app:fab_icon="@drawable/ic_singin"
+            app:fab_icon="@drawable/ic_place_w"
             app:fab_size="mini"
             app:fab_title="Rutas" />
 
@@ -36,10 +36,32 @@
             android:layout_height="wrap_content"
             app:fab_colorNormal="#8500B5"
             app:fab_colorPressed="#7F01C3"
-            app:fab_icon="@drawable/ic_calendar"
+            app:fab_icon="@drawable/ic_event_w"
             app:fab_size="mini"
             app:fab_title="Eventos" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/background_img" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#95000000"
+        android:padding="10sp"
+        android:text="Santuario de Las Lajas"
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
