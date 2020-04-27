@@ -40,20 +40,6 @@ const getUsers = async(req, res)=>{
     }    
 } 
 
-const getRoutes = async(req, res)=>{
-    try {
-        let jsonInfo = req.body;
-        if(jsonInfo.header != null && jsonInfo.user != null && jsonInfo.password != null){
-            console.log(req.body);
-            let str_query = `SELECT * FROM USUARIOS WHERE nom_usuario like '${jsonInfo.user}' and clave_usuario like '${jsonInfo.password}'`;
-            const response = await pool.query(str_query);
-            res.status(200).json(response.rows);
-        }else res.send("Error :(");
-    } catch (e) {
-        console.log(e);
-    }    
-} 
-
 
 //--------------------------------------------------- USERS
 const newUser = async(req, res)=>{
@@ -120,13 +106,12 @@ const deleteEvents = async(req, res)=>{
         //console.log(req.file);
         const response = await pool.query(str_query);
         console.log(response);
-        res.render('regresar.ejs', {title:'Evento', message:"Evento creado exitosamente", str_url:'/eventos'});
+        res.render('regresar.ejs', {title:'Evento', message:"Evento eliminado exitosamente", str_url:'/eventos'});
     } catch (e) {
         console.log(e);
     }    
 } 
 
-//------------------------------------------------------- Actividades
 //------------------------------------------------------- Municipios
 const getMuni = async(req, res)=>{
     try {
@@ -176,12 +161,68 @@ const deleteMuni = async(req, res)=>{
     }    
 } 
 
+//--------------------------------------------------------------------------Rutas
+const getRoutes = async(req, res)=>{
+    try {
+        let str_query = `SELECT * FROM RUTAS`;
+        const response = await pool.query(str_query);
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json(response.rows);
+    } catch (e) {
+        console.log(e);
+    }      
+} 
+
+const newRoutes = async(req, res)=>{
+    try {
+        console.log(req.body);
+        let json = req.body;
+        let id = new Date();
+        id = id.getTime();
+        let str_query = `INSERT INTO RUTAS(ID_RUTA, ID_MUNICIPIO, NOM_RUTA, DESC_RUTA, IMG_RUTA, TIEMPO_RUTA) VALUES
+        ('${id}', '${json.id_municipio}', '${json.nom_ruta}', '${json.desc_ruta}', '${req.file.originalname}', '${json.tiempo_ruta} ${json.tipo_tiempo}')`;
+        const response = await pool.query(str_query);
+        console.log(response);
+        res.render('regresar.ejs', {title:'Rutas', message:"Ruta creada exitosamente", str_url:'/rutas'});
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
+const editRoutes = async(req, res)=>{
+    try {
+        console.log("PUT: " + JSON.stringify(req.body));
+        //console.log(res);
+        /*
+        let json = req.body;
+        let id = new Date();
+        id = id.getTime();
+        let str_query = `INSERT INTO RUTAS(ID_RUTA, ID_MUNICIPIO, NOM_RUTA, DESC_RUTA, IMG_RUTA, TIEMPO_RUTA) VALUES
+        ('${id}', '${json.id_municipio}', '${json.nom_ruta}', '${json.desc_ruta}', '${req.file.originalname}', '${json.tiempo_ruta}')`;
+        const response = await pool.query(str_query);
+        */
+        //console.log(response);
+        //res.render('regresar.ejs', {title:'Rutas', message:"Ruta creada exitosamente", str_url:'/rutas'});
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
+const deleteRoutes = async(req, res)=>{
+    try {
+        let str_query = `DELETE FROM RUTAS WHERE id_ruta like '${req.body.id_ruta}'`;
+        const response = await pool.query(str_query);
+        res.send("DELETED");
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
 
 
 module.exports = {
     validateUser,
     getUsers,
-    getRoutes, 
 
     newUser, 
     editUser,
@@ -194,6 +235,11 @@ module.exports = {
 
     getEvents,
     newEvents,
-    deleteEvents
+    deleteEvents,
+
+    getRoutes,
+    newRoutes,
+    editRoutes,
+    deleteRoutes
 }
 

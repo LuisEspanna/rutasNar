@@ -1,0 +1,347 @@
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            height:80px;
+        }
+        li{
+            display: inline-block;
+            padding:10px;
+            width: 100px;
+            height: 80px;
+            font-size: 12px;
+        }
+
+        .smallmap {
+            width: 400px;
+            height: 200px;
+        }
+
+        .mapa{
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+    <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+</head>
+<body>
+    <p>RUTAS</p>
+    </br>    
+    <div class="mapa">
+        <div id="map"></div>
+    </div>
+    <div id="coords">Position: lon=-77.33704966415,lat=1.544847981333</div>
+
+    <form action="/api/routes" method="POST" enctype="multipart/form-data">
+        <div>Municipio
+        <select id="cbx_municipios" name="id_municipio">
+        </div>
+        </select></br>
+        <input type="text" id="txt_nombre" placeholder="Nombre ruta" name="nom_ruta"><br />
+        <textarea id="txt_desc" cols="50" rows="10" placeholder="Descripcion" name="desc_ruta"></textarea><br />
+        
+        <input name="imagen" id="image_input" type="file" /><br />
+        <img id="imgSalida" width="300px" src="" /><br />
+
+        <input type="number" id="txt_tiempo_ruta" placeholder="Tiempo en recorrer" name="tiempo_ruta">
+        <select id="cbx_disponible" name="tipo_tiempo">
+            <option value="minutos">Minutos</option>
+            <option value="horas">Horas</option>
+            <option value="dias">Dias</option>
+        </select>
+        <br />
+        <br />
+        <input type="submit" value="Guardar" id="btn_guardar1"></br>
+        <textarea name="txt_coordenadas" id="txt_coordenadas" cols="70" rows="10" placeholder="Las coordenadas se van agregando automáticamente"></textarea>
+    </form>
+
+    <br />
+    <ul id="parent">
+        <li>IDENTIFICADOR</li>
+        <li>ID_MUNICIPIO</li>
+        <li>NOM_RUTA</li>
+        <li>DESC_RUTA</li>
+        <li>IMAGEN</li>
+        <li>TIMPO RUTA</li>
+    </ul>
+    <div id="tabla">
+        <div id="listado">
+            
+        </div>
+    </div>
+</body>
+<script>
+    function main(){
+        actualizarCbx();
+        actualizarListado();
+        startMap();
+    }
+
+    //----------------------------------------MAPA
+    var coordenadas = [];
+    var def_lat = 1.22; 
+    var def_lon = -77.34;
+    var def_zoom = 11;
+    var SHADOW_Z_INDEX = 10;
+    var MARKER_Z_INDEX = 11;
+    var DIAMETER = 200;
+    var NUMBER_OF_FEATURES = 15;
+    var map, osm, osm_lite, layer;
+    var fromProjection, toProjection;
+    var use_pos_control = false;
+
+    function startMap() {
+        map = new OpenLayers.Map("map", {
+                projection: new OpenLayers.Projection("EPSG:3857"),
+                displayProjection: new OpenLayers.Projection("EPSG:4326")
+            }
+        );
+        osm = new OpenLayers.Layer.OSM("Normal OSM");
+        map.addLayer(osm);
+        osm_lite = new OpenLayers.Layer.OSM("Light OSM");
+        osm_lite.setOpacity(0.4);
+        map.addLayers([osm, osm_lite]);
+
+        fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+        toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+
+
+        map.addControl(new OpenLayers.Control.ScaleLine());
+        map.addControl(new OpenLayers.Control.LayerSwitcher());
+        if (use_pos_control) {
+            map.addControl(new OpenLayers.Control.MousePosition());
+        } else {
+            map.events.register("mousemove", map, function (e) {
+                var lonlat = map.getLonLatFromPixel(this.events.getMousePosition(e));
+                var lltrans = lonlat.transform(toProjection, fromProjection);
+                OpenLayers.Util.getElement("coords").innerHTML = 'Position: ' + lltrans;
+            });
+        }
+
+        var pos = new OpenLayers.LonLat(def_lon, def_lat).transform(fromProjection, toProjection);
+        map.setCenter(pos, def_zoom);
+
+        layer = new OpenLayers.Layer.Vector("Markers w/ Drop Shadows",
+            {
+                styleMap: new OpenLayers.StyleMap({
+                    graphicYOffset: -25, // shift graphic up 28 pixels
+                    label: "${name}",
+                    // Set the external graphic and background graphic images.
+                    externalGraphic: "${icon}",
+                    
+                    // Set the z-indexes of both graphics to make sure the background
+                    // graphics stay in the background (shadows on top of markers looks
+                    // odd; let's not do that).
+                    backgroundGraphicZIndex: SHADOW_Z_INDEX,
+                    graphicZIndex: MARKER_Z_INDEX,
+                    // Makes sure the background graphic is placed correctly relative
+                    // to the external graphic.
+                    backgroundXOffset: -2,
+                    backgroundYOffset: -20,
+                    pointRadius: 10
+                }),
+                isBaseLayer: false,
+                rendererOptions: { yOrdering: true }
+            });
+
+        map.addLayers([layer]);
+
+        // Add a drag feature control to move features around.
+        var dragFeature = new OpenLayers.Control.DragFeature(layer);
+        map.addControl(dragFeature);
+        dragFeature.activate();
+
+        var click = new OpenLayers.Control.Click();
+        map.addControl(click);
+        click.activate();
+    }
+
+    OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control,
+        {
+            defaultHandlerOptions: {
+                'single': true,
+                'double': false,
+                'pixelTolerance': 0,
+                'stopSingle': false,
+                'stopDouble': false
+            },
+            initialize: function (options) {
+                this.handlerOptions = OpenLayers.Util.extend(
+                    {}, this.defaultHandlerOptions
+                );
+                OpenLayers.Control.prototype.initialize.apply(
+                    this, arguments
+                );
+                this.handler = new OpenLayers.Handler.Click(
+                    this, {
+                    'click': this.trigger
+                },
+                    this.handlerOptions
+                );
+            },
+            trigger: function (e) {
+                var lonlat = map.getLonLatFromViewPortPx(e.xy);
+                //alert("You clicked near " + lonlat.lat + " N, " +lonlat.lon + " E");
+                //layer.removeFeatures(layer.features);
+                var features = [];
+                // build a feature vector
+                var myMarker = new OpenLayers.Feature.Vector(
+                    new OpenLayers.Geometry.Point(lonlat.lon, lonlat.lat));
+                
+                myMarker.attributes = {
+                    name: "Marcador",
+                    icon: "../public/images/marcador.png"
+                };
+                features.push(myMarker);
+                layer.addFeatures(features);
+
+                let txt_coordenadas = document.getElementById("txt_coordenadas");
+                let coord = lonlat.transform(toProjection, fromProjection);
+                coordenadas.push(
+                    {
+                        lon: coord.lon,
+                        lat: coord.lat
+                    }
+                );
+                
+                txt_coordenadas.value = "[";
+                for (let i = 0; i < coordenadas.length; i++) {
+                    const elem = coordenadas[i];
+                    txt_coordenadas.value += `{lon:${elem.lon}, lat:${elem.lat}}`;
+                    if(i+1 < coordenadas.length)txt_coordenadas.value += ",";
+                }
+                txt_coordenadas.value += "]";
+            }
+        });
+    //----------------------------------------FIN MAPA
+    const URL_SERVER = "/api/routes";
+
+
+    //----------------------------------- Visualizar imagen
+    
+    var image_input = document.getElementById("image_input");
+    image_input.oninput = function(e){
+        var file = e.target.files[0],
+        imageType = /image.*/;
+
+        if (!file.type.match(imageType)) return;
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var result = e.target.result;
+            let img_salida = document.getElementById("imgSalida");
+            img_salida.setAttribute("src", result);
+            img_salida.setAttribute("style", "width: 450px;")
+        };
+        reader.readAsDataURL(file);
+    }
+    //----------------------------------- Fin visualizar imagen
+
+    
+    async function actualizarListado(){
+        limpiarListado();
+        let listado = document.getElementById("listado");
+        const http = new XMLHttpRequest();
+        http.open("GET", URL_SERVER);
+        http.onreadystatechange = function(){
+
+        if (this.readyState == 4 && this.status == 200) {
+                var resultado = JSON.parse(this.responseText);
+                resultado.forEach(element => {
+                    listado.appendChild(elementoLista(element));
+                });
+            }
+        }
+        http.send();
+    }
+
+    function limpiarListado(){
+        let tabla = document.getElementById("tabla");
+        let listado = document.getElementById("listado");
+        tabla.removeChild(listado);
+        listado = document.createElement("div");
+        listado.setAttribute("id", "listado");
+        tabla.appendChild(listado);
+    }
+
+
+    function elementoLista(json){
+        let parent = document.createElement("ul");
+        let id_ruta = document.createElement("li");
+        let id_municipio = document.createElement("li");
+        let nom_ruta = document.createElement("li");
+        let desc_ruta = document.createElement("li");
+        let imagen = document.createElement("li");
+        let tiempo = document.createElement("li");
+        let btn_eliminar = document.createElement("input");
+        
+        //--------------------------------------------------------------------------------
+        id_ruta.innerHTML = json.id_ruta;
+        id_municipio.innerHTML = json.id_municipio;
+        nom_ruta.innerHTML = json.nom_ruta;
+        desc_ruta.innerHTML = json.desc_ruta;
+        imagen.innerHTML = json.img_ruta;
+        tiempo.innerHTML = json.tiempo_ruta;
+       
+        //--------------------------------------------------------------------------------
+        btn_eliminar.setAttribute("onclick", "eliminarRuta("+json.id_ruta+")");
+        btn_eliminar.setAttribute("value", "Eliminar");
+        btn_eliminar.setAttribute("type", "button");
+
+        parent.appendChild(id_ruta);
+        parent.appendChild(id_municipio);
+        parent.appendChild(nom_ruta);
+        parent.appendChild(desc_ruta);
+        parent.appendChild(imagen);
+        parent.appendChild(tiempo);
+        parent.appendChild(btn_eliminar);
+        parent.setAttribute("name", "muni_element");
+        return parent;
+    }
+
+    function actualizarCbx() {
+        let cbx_municipios = document.getElementById("cbx_municipios");
+        const http = new XMLHttpRequest();
+        http.open("GET", "/api/municipality");
+        http.onreadystatechange = function(){
+            if (this.readyState == 4 && this.status == 200) {
+                var resultado = JSON.parse(this.responseText);
+                resultado.forEach(element => {
+                    let son = document.createElement("option");
+                    son.setAttribute("value", element.id_municipio);
+                    son.innerHTML = element.nom_municipio;
+                    cbx_municipios.appendChild(son);
+                });
+            }
+        }
+        http.send();
+    }
+
+    //------------------------------------------------------------------------------- Eliminar
+    function eliminarRuta(id){
+        alert("Eliminar");
+        
+        let jsonData = {
+            id_ruta: id
+        };
+        let http = new XMLHttpRequest();
+        http.open("DELETE", URL_SERVER, true);
+        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+                actualizarListado();
+            }
+        }
+        http.send(JSON.stringify(jsonData));
+    }
+
+    main();
+</script>
+</html>
