@@ -32,6 +32,8 @@ public class RoutesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes);
 
+        setTitle("Rutas");
+
         recyclerView = findViewById(R.id.recycler_routes);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
