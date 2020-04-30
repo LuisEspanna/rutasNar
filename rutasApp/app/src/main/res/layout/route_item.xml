@@ -6,21 +6,20 @@
     android:layout_height="wrap_content"
     android:layout_margin="18dp"
     android:background="@drawable/card_shape"
-    android:elevation="10dp"
-    android:orientation="vertical">
+    android:elevation="10dp">
 
     <ProgressBar
-        android:id="@+id/progressBar2"
+        android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/img_item_event"
-        app:layout_constraintEnd_toEndOf="@+id/img_item_event"
-        app:layout_constraintStart_toStartOf="@+id/img_item_event"
-        app:layout_constraintTop_toTopOf="@+id/img_item_event" />
+        app:layout_constraintBottom_toBottomOf="@+id/img_item_route"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/img_item_event"
+        android:id="@+id/img_item_route"
         android:layout_width="0dp"
         android:layout_height="200sp"
         android:layout_marginStart="24dp"
@@ -31,6 +30,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/prev_img" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_route_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="9dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_item_title"
+        app:layout_constraintEnd_toEndOf="@+id/img_item_route"
+        app:srcCompat="@drawable/ic_star" />
+
     <TextView
         android:id="@+id/txt_item_title"
         android:layout_width="0dp"
@@ -38,12 +48,10 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="100dp"
-        android:gravity="left"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_item_event" />
+        app:layout_constraintTop_toBottomOf="@+id/img_item_route" />
 
     <TextView
         android:id="@+id/txt_item_description"
@@ -52,61 +60,69 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:gravity="left"
-        android:text="@string/large_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_item_title" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_item_title"
+        tools:text="@string/large_text" />
 
     <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="28dp"
-        android:layout_height="33dp"
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="@+id/txt_item_description"
         app:layout_constraintTop_toBottomOf="@+id/txt_item_description"
-        app:srcCompat="@drawable/ic_calendar" />
+        app:srcCompat="@drawable/ic_time" />
 
     <TextView
         android:id="@+id/txt_item_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="2020-04-20"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+        android:text="20 minutos"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
     <Button
         android:id="@+id/btn_item_more"
         android:layout_width="195dp"
         android:layout_height="45dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/color_button"
         android:hint="Más información"
         android:textColorHint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_item_time" />
 
-    <TextView
-        android:id="@+id/textView6"
+    <ImageView
+        android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="60dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_item_time"
+        app:layout_constraintStart_toEndOf="@+id/txt_item_time"
+        app:layout_constraintTop_toTopOf="@+id/txt_item_time"
+        app:srcCompat="@drawable/ic_place" />
+
+    <TextView
+        android:id="@+id/txt_item_municipio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Pasto"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_item_more" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_item_favorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="9dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/txt_item_title"
-        app:layout_constraintEnd_toEndOf="@+id/img_item_event"
-        app:srcCompat="@drawable/ic_star" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

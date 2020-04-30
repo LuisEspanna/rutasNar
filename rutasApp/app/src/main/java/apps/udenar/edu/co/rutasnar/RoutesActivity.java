@@ -12,65 +12,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 import apps.udenar.edu.co.rutasnar.adapters.EventAdapter;
+import apps.udenar.edu.co.rutasnar.adapters.RouteAdapter;
 import apps.udenar.edu.co.rutasnar.interfaces.RutasNarAPI;
 import apps.udenar.edu.co.rutasnar.model.Event;
+import apps.udenar.edu.co.rutasnar.model.Route;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class EventsActivity extends AppCompatActivity {
-
-    RecyclerView recyclerEvents;
-    private List<Event> eventList;
-    private EventAdapter eventAdapter;
+public class RoutesActivity extends AppCompatActivity {
+    private RecyclerView recyclerView;
+    private List<Route> mRoutes;
+    private RouteAdapter routeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_events);
+        setContentView(R.layout.activity_routes);
 
-        setTitle("Eventos");
-
-        recyclerEvents = findViewById(R.id.recycler_routes);
+        recyclerView = findViewById(R.id.recycler_routes);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerEvents.setLayoutManager(linearLayoutManager);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
+        mRoutes = new ArrayList<>();
 
-        eventList = new ArrayList<>();
-
-        getEvents();
+        getRoutes();
     }
 
-    private void getEvents(){
+    private void getRoutes() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://181.55.121.253:8880/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         RutasNarAPI rutasNarAPI = retrofit.create(RutasNarAPI.class);
-        Call<List<Event>> call = rutasNarAPI.getEvents();
+        Call<List<Route>> call = rutasNarAPI.getRoutes();
 
-        call.enqueue(new Callback<List<Event>>() {
+        call.enqueue(new Callback<List<Route>>() {
             @Override
-            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+            public void onResponse(Call<List<Route>> call, Response<List<Route>> response) {
                 if(!response.isSuccessful()){
                     Log.d("NOTICIAS", "onResponse: " + response);
-                    Toast.makeText(EventsActivity.this, "Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RoutesActivity.this, "Error", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                eventList.clear();
-                eventList.addAll(response.body());
-                eventAdapter = new EventAdapter(EventsActivity.this,eventList);
-                recyclerEvents.setAdapter(eventAdapter);
+                mRoutes.clear();
+                mRoutes.addAll(response.body());
+                routeAdapter = new RouteAdapter(RoutesActivity.this, mRoutes);
+                recyclerView.setAdapter(routeAdapter);
             }
 
             @Override
-            public void onFailure(Call<List<Event>> call, Throwable t) {
-
-            }
+            public void onFailure(Call<List<Route>> call, Throwable t) {}
         });
     }
 }
