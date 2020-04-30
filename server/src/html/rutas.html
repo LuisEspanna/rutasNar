@@ -287,7 +287,7 @@
         id_ruta.innerHTML = json.id_ruta;
         id_municipio.innerHTML = json.id_municipio;
         nom_ruta.innerHTML = json.nom_ruta;
-        desc_ruta.innerHTML = json.desc_ruta;
+        desc_ruta.innerHTML = json.desc_ruta.substr(0,10)+"...";;
         imagen.innerHTML = json.img_ruta;
         tiempo.innerHTML = json.tiempo_ruta;
        
