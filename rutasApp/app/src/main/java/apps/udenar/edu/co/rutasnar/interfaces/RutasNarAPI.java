@@ -4,8 +4,12 @@ import java.util.List;
 
 import apps.udenar.edu.co.rutasnar.model.Event;
 import apps.udenar.edu.co.rutasnar.model.Route;
+import apps.udenar.edu.co.rutasnar.model.User;
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 public interface RutasNarAPI {
 
@@ -14,4 +18,10 @@ public interface RutasNarAPI {
 
     @GET("routes")
     Call<List<Route>> getRoutes();
+
+    @POST("users")
+    @FormUrlEncoded
+    Call<User> newUser(@Field("id_usuario") String userId,
+                       @Field("nom_usuario") String userName,
+                       @Field("clave_usuario") String userPass);
 }

@@ -45,6 +45,8 @@ const getUsers = async(req, res)=>{
 const newUser = async(req, res)=>{
     try {
         console.log(req.body);
+       // res.setHeader(201);
+        res.send("ok");
     } catch (e) {
         console.log(e);
     }    
@@ -231,6 +233,7 @@ const deleteRoutes = async(req, res)=>{
 module.exports = {
     validateUser,
     getUsers,
+    deleteUser,
 
     newUser, 
     editUser,

@@ -5,7 +5,7 @@ const { getUsers } = require('../database/manager');
 //----------------------------------------------------------Users
 const { newUser } = require('../database/manager');
 const { editUser } = require('../database/manager');
-
+const { deleteUser } = require('../database/manager');
 
 //----------------------------------------------------------Muni
 const { getMuni } = require('../database/manager');
@@ -48,9 +48,10 @@ router.post('/loggin', validateUser);
     delete: Eliminar
 */
 //----------------------------------------------- Usuarios
+//router.get('/api/users', getUsers); //No es seguro enviar esta informacion :v
 router.post('/api/users', newUser);
 router.put('/api/users', editUser);
-//router.delete('/api/users', newUser);
+router.delete('/api/users', deleteUser);
 
 //----------------------------------------------- Rutas
 router.get('/rutas', async (req, res)=>{
