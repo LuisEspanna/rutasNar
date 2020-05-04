@@ -9,21 +9,19 @@ const config = {
 
 const pool = new Pool(config);
 
+//--------------------------------------------------- USERS
 const validateUser = async(req, res)=>{
     try {
+        console.log("Validate user");
         let jsonInfo = req.body;
-        if(jsonInfo.header != null && jsonInfo.user != null && jsonInfo.password != null){
-            if(jsonInfo.header == 'validate_user'){
-                console.log(req.body);
-                let str_query = `SELECT * FROM USUARIOS WHERE nom_usuario like '${jsonInfo.user}' and clave_usuario like '${jsonInfo.password}'`;
-                //console.log(str_query);
-                const response = await pool.query(str_query);
-                
-                if(response.rows[0] === undefined){
-                    res.status(400).send("404"); 
-                }else res.status(200).json(response.rows[0].id_usuario);
-            }
-        }else res.send("Error");
+        let str_query = `SELECT * FROM USUARIOS WHERE nom_usuario like '${jsonInfo.nom_usuario}' and clave_usuario like '${jsonInfo.clave_usuario}'`;
+
+        const response = await pool.query(str_query);
+
+        if (response.rows[0] === undefined) {
+            res.status(404).send(jsonInfo);
+        } else res.status(200).json(response.rows[0]);
+       
     } catch (e) {
         console.log(e);
     }    
@@ -38,15 +36,16 @@ const getUsers = async(req, res)=>{
     } catch (e) {
         console.log(e);
     }    
-} 
+}
 
-
-//--------------------------------------------------- USERS
 const newUser = async(req, res)=>{
     try {
+        console.log("new user");
+        let infoJson = req.body;
+        infoJson.id_usuario = new Date().getTime();
         console.log(req.body);
        // res.setHeader(201);
-        res.send("ok");
+        res.json(req.body);
     } catch (e) {
         console.log(e);
     }    

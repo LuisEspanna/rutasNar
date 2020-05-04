@@ -43,7 +43,10 @@ public class UserLoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String user = txtUser.getText().toString();
                 String pwd = txtPassword.getText().toString().trim();
-                createUser(user,pwd);
+
+                checkUser(user, pwd);
+
+                //createUser(user,pwd);
                 /*
                 String user = mTextUsername.getText().toString().trim();
                 String pwd = mTextPassword.getText().toString().trim();
@@ -61,20 +64,33 @@ public class UserLoginActivity extends AppCompatActivity {
         });
     }
 
-    private void createUser(String user, String pwd){
-        rutasNarAPI.newUser(System.currentTimeMillis()+"", user, pwd).enqueue(new Callback<User>() {
+    private void checkUser(String user, String pwd) {
+        rutasNarAPI.loggin("0", user, pwd).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()){
                     Log.d("NOTICIAS", "onResponse: " + response.body().toString());
+                    User user = response.body();
+
+                    if (user.getIdUsuario().length() > 0){
+                        Intent MainActivity = new Intent(UserLoginActivity.this,MainActivity.class);
+                        startActivity(MainActivity);
+                    }
+                    else{
+                        Toast.makeText(UserLoginActivity.this,"Error de inicio de sesión",Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+                    Toast.makeText(UserLoginActivity.this,"Error de inicio de sesión",Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                Toast.makeText(UserLoginActivity.this,"Error de inicio de sesión",Toast.LENGTH_SHORT).show();
             }
         });
-
     }
+
+
 }

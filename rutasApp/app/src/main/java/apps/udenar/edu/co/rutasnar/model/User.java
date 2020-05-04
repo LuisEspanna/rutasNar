@@ -1,5 +1,7 @@
 package apps.udenar.edu.co.rutasnar.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -36,5 +38,11 @@ public class User {
 
     public void setClaveUsuario(String claveUsuario) {
         this.claveUsuario = claveUsuario;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format("{id: %s, nombre: %s, clave: %s}", idUsuario, nomUsuario, claveUsuario);
     }
 }

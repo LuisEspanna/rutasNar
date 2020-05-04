@@ -24,4 +24,11 @@ public interface RutasNarAPI {
     Call<User> newUser(@Field("id_usuario") String userId,
                        @Field("nom_usuario") String userName,
                        @Field("clave_usuario") String userPass);
+
+    @POST("loggin")
+    @FormUrlEncoded
+    Call<User> loggin(@Field("id_usuario") String userId,
+                       @Field("nom_usuario") String userName,
+                       @Field("clave_usuario") String userPass);
+
 }

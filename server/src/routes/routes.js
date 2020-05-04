@@ -38,10 +38,6 @@ router.get("/", async (req, res)=>{
     }
 });
 
-//--Verificar si el usuario está en la base
-router.post('/loggin', validateUser);
-
-
 /*
     post: Crear
     put: Editar
@@ -49,6 +45,9 @@ router.post('/loggin', validateUser);
 */
 //----------------------------------------------- Usuarios
 //router.get('/api/users', getUsers); //No es seguro enviar esta informacion :v
+//--Verificar si el usuario está en la base
+router.post('/api/loggin', validateUser);
+
 router.post('/api/users', newUser);
 router.put('/api/users', editUser);
 router.delete('/api/users', deleteUser);
