@@ -78,6 +78,15 @@ public class UserRegisterActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()){
                     Log.d("NOTICIAS", "onResponse: " + response.body().toString());
+                    User u = response.body();
+
+                    DatabaseHelper db = new DatabaseHelper(UserRegisterActivity.this);
+                    db.addUser(u);
+                    db.close();
+
+                    Intent MainActivity = new Intent(UserRegisterActivity.this,MainActivity.class);
+                    startActivity(MainActivity);
+                    finish();
                 }
             }
 

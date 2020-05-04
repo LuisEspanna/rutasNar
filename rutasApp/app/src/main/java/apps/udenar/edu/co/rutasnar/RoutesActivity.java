@@ -45,7 +45,7 @@ public class RoutesActivity extends AppCompatActivity {
 
     private void getRoutes() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://181.55.121.253:8880/api/")
+                .baseUrl(ApiUtils.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

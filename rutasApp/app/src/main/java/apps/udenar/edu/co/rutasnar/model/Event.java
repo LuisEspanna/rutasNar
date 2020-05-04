@@ -2,6 +2,8 @@ package apps.udenar.edu.co.rutasnar.model;
 
 import java.util.Map;
 
+import apps.udenar.edu.co.rutasnar.ApiUtils;
+
 public class Event {
     private String id_evento;
     private String id_municipio;
@@ -62,7 +64,7 @@ public class Event {
     }
 
     public String getImg_evento() {
-        return "http://181.55.121.253:8880/public/uploads/"+img_evento;
+        return ApiUtils.IMAGES_URL +img_evento;
     }
 
     public void setImg_evento(String img_evento) {

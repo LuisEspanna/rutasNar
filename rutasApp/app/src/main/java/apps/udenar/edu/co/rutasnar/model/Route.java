@@ -2,6 +2,8 @@ package apps.udenar.edu.co.rutasnar.model;
 
 import java.util.Map;
 
+import apps.udenar.edu.co.rutasnar.ApiUtils;
+
 public class Route {
     private String id_ruta;
     private String id_municipio;
@@ -52,7 +54,7 @@ public class Route {
     }
 
     public String getImg_ruta() {
-        return "http://181.55.121.253:8880/public/uploads/"+img_ruta;
+        return ApiUtils.IMAGES_URL +img_ruta;
     }
 
     public void setImg_ruta(String img_ruta) {

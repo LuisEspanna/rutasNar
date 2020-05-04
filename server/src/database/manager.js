@@ -20,7 +20,10 @@ const validateUser = async(req, res)=>{
 
         if (response.rows[0] === undefined) {
             res.status(404).send(jsonInfo);
-        } else res.status(200).json(response.rows[0]);
+        } else {
+            res.status(200).json(response.rows[0]);
+            console.log("Inicio de sesión correcto para " + response.rows[0].nom_usuario)
+        }
        
     } catch (e) {
         console.log(e);

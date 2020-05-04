@@ -30,13 +30,21 @@ public class UserLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_login);
         setTitle("Inicio de sesión");
 
-
         db = new DatabaseHelper(this);
         txtUser = findViewById(R.id.edittext_username);
         txtPassword = findViewById(R.id.edittext_passwd);
         mButtonLogin = findViewById(R.id.btn_login);
 
         rutasNarAPI = ApiUtils.getAPIService();
+
+        DatabaseHelper db = new DatabaseHelper(UserLoginActivity.this);
+        if(db.checkUser()){
+            Intent MainActivity = new Intent(UserLoginActivity.this,MainActivity.class);
+            startActivity(MainActivity);
+            db.close();
+            finish();
+            return;
+        }
 
         mButtonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +53,8 @@ public class UserLoginActivity extends AppCompatActivity {
                 String pwd = txtPassword.getText().toString().trim();
 
                 checkUser(user, pwd);
+
+
 
                 //createUser(user,pwd);
                 /*
@@ -65,6 +75,8 @@ public class UserLoginActivity extends AppCompatActivity {
     }
 
     private void checkUser(String user, String pwd) {
+
+
         rutasNarAPI.loggin("0", user, pwd).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -73,8 +85,11 @@ public class UserLoginActivity extends AppCompatActivity {
                     User user = response.body();
 
                     if (user.getIdUsuario().length() > 0){
+                        db.addUser(user);
+                        db.close();
                         Intent MainActivity = new Intent(UserLoginActivity.this,MainActivity.class);
                         startActivity(MainActivity);
+                        finish();
                     }
                     else{
                         Toast.makeText(UserLoginActivity.this,"Error de inicio de sesión",Toast.LENGTH_SHORT).show();

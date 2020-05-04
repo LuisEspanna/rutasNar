@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import apps.udenar.edu.co.rutasnar.model.User;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper{
@@ -14,11 +15,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public static final String TABLE_NAME ="registeruser";
 
-    public static final String COL_1 ="ID";
+    public static final String COL_1 ="id_usuario";
 
-    public static final String COL_2 ="username";
+    public static final String COL_2 ="nom_usuario";
 
-    public static final String COL_3 ="password";
+    public static final String COL_3 ="clave_usuario";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -26,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE registeruser (ID INTEGER PRIMARY  KEY AUTOINCREMENT, username TEXT, password TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE registeruser (id_usuario, nom_usuario varchar, clave_usuario varchar)");
     }
 
     @Override
@@ -35,34 +36,39 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         onCreate(sqLiteDatabase);
     }
 
-    public long addUser(String user, String password){
+    public long addUser(User user){
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("username",user);
-        contentValues.put("password",password);
-        long res = db.insert("registeruser",null,contentValues);
+        contentValues.put(COL_1,user.getIdUsuario());
+        contentValues.put(COL_2,user.getNomUsuario());
+        contentValues.put(COL_3,user.getClaveUsuario());
+        long res = db.insert(TABLE_NAME,null,contentValues);
         db.close();
         return  res;
     }
 
-    public boolean checkUser(String username, String password){
+    public void resetDB(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = String.format("DELETE FROM %s", TABLE_NAME);
+        db.execSQL(query);
+    }
 
-        String[] columns = { COL_1 };
-        SQLiteDatabase db = getReadableDatabase();
-        String selection = COL_2 + "=?" + " and " + COL_3 + "=?";
-        String[] selectionArgs = { username, password };
-        Cursor cursor = db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
-        int count = cursor.getCount();
-        cursor.close();
-        db.close();
+    public boolean checkUser(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = String.format("SELECT * FROM %s", TABLE_NAME);
 
-        if(count>0)
+        Cursor cursor = db.rawQuery(query, null);
 
-            return  true;
+        if (cursor.moveToFirst()){
+            String id = cursor.getString(0);
 
-        else
-
-            return  false;
+            if(id != null){
+                if(id.compareTo("0")!=0){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
