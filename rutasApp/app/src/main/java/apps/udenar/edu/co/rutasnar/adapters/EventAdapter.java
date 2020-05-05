@@ -18,8 +18,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+import apps.udenar.edu.co.rutasnar.ApiUtils;
 import apps.udenar.edu.co.rutasnar.R;
+import apps.udenar.edu.co.rutasnar.interfaces.RutasNarAPI;
 import apps.udenar.edu.co.rutasnar.model.Event;
+import apps.udenar.edu.co.rutasnar.model.Postit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
@@ -47,13 +53,32 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         holder.btn_item_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "No disponible :(", Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext, "No disponible :(", Toast.LENGTH_LONG).show();
+                saveEvent(ApiUtils.getCurrentUser(mContext).getIdUsuario(), e.getNom_evento(), e.getId_evento());
             }
         });
 
         holder.txt_item_title.setText(e.getNom_evento());
         holder.txt_item_description.setText(e.getDescEventSumary());
         holder.txt_item_date.setText(e.getFecha_evento());
+    }
+
+    private void saveEvent(String idUsuario, String nom_evento, String id_evento) {
+        RutasNarAPI rutasNarAPI = ApiUtils.getAPIService();
+        rutasNarAPI.postit(idUsuario, nom_evento, "", id_evento).enqueue(new Callback<List<Postit>>() {
+            @Override
+            public void onResponse(Call<List<Postit>> call, Response<List<Postit>> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(mContext, "Evento guardado :D", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(mContext, "Ya existe...", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Postit>> call, Throwable t) {}
+        });
     }
 
 

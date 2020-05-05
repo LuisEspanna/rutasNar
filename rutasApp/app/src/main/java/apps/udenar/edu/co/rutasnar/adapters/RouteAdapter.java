@@ -18,7 +18,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 import apps.udenar.edu.co.rutasnar.ApiUtils;
-import apps.udenar.edu.co.rutasnar.DatabaseHelper;
 import apps.udenar.edu.co.rutasnar.R;
 import apps.udenar.edu.co.rutasnar.interfaces.RutasNarAPI;
 import apps.udenar.edu.co.rutasnar.model.Postit;
