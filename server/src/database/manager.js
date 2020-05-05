@@ -22,7 +22,7 @@ const validateUser = async(req, res)=>{
             res.status(404).send(jsonInfo);
         } else {
             res.status(200).json(response.rows[0]);
-            console.log("Inicio de sesión correcto para " + response.rows[0].nom_usuario)
+            console.log("Inicio de sesión correcto para " + response.rows[0].nom_usuario);
         }
        
     } catch (e) {
@@ -203,17 +203,6 @@ const newRoutes = async(req, res)=>{
 const editRoutes = async(req, res)=>{
     try {
         console.log("PUT: " + JSON.stringify(req.body));
-        //console.log(res);
-        /*
-        let json = req.body;
-        let id = new Date();
-        id = id.getTime();
-        let str_query = `INSERT INTO RUTAS(ID_RUTA, ID_MUNICIPIO, NOM_RUTA, DESC_RUTA, IMG_RUTA, TIEMPO_RUTA) VALUES
-        ('${id}', '${json.id_municipio}', '${json.nom_ruta}', '${json.desc_ruta}', '${req.file.originalname}', '${json.tiempo_ruta}')`;
-        const response = await pool.query(str_query);
-        */
-        //console.log(response);
-        //res.render('regresar.ejs', {title:'Rutas', message:"Ruta creada exitosamente", str_url:'/rutas'});
     } catch (e) {
         console.log(e);
     }    
@@ -230,6 +219,59 @@ const deleteRoutes = async(req, res)=>{
     }    
 } 
 
+
+//------------------------------------------------ Actividades
+const getActivity = async(req, res)=>{
+    try {
+        console.log("listado de actividades");
+        console.log(req.body);
+
+        const response = await pool.query(`SELECT * FROM ACTIVIDADES`);
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json(response.rows);
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
+
+const newActivity = async(req, res)=>{
+    try {
+        console.log("Nueva actividad");
+        console.log("listado de actividades");
+        console.log(req.body);
+
+        if(req.body.id_usuario != undefined){
+            if(req.body.id_ruta != ""){
+                
+            }
+            else if(req.body.id_evento != ""){
+                
+            }
+            else{
+                const response = await pool.query(`SELECT * FROM ACTIVIDADES WHERE ID_USUARIO LIKE '${req.body.id_usuario}'`);
+                res.setHeader('Content-Type', 'application/json');
+                res.status(200).json(response.rows);
+            }
+        }
+        else if(req.body.id_usuario === undefined){
+            const response = await pool.query(`SELECT * FROM ACTIVIDADES`);
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).json(response.rows);
+        }
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
+const deleteActivity = async(req, res)=>{
+    try {
+        console.log("Actividad elimiada");
+        console.log(req.body);
+    } catch (e) {
+        console.log(e);
+    }    
+} 
 
 
 module.exports = {
@@ -253,6 +295,10 @@ module.exports = {
     getRoutes,
     newRoutes,
     editRoutes,
-    deleteRoutes
+    deleteRoutes,
+
+    getActivity,
+    newActivity,
+    deleteActivity
 }
 

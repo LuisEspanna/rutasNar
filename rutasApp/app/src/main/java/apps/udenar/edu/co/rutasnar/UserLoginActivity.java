@@ -53,30 +53,11 @@ public class UserLoginActivity extends AppCompatActivity {
                 String pwd = txtPassword.getText().toString().trim();
 
                 checkUser(user, pwd);
-
-
-
-                //createUser(user,pwd);
-                /*
-                String user = mTextUsername.getText().toString().trim();
-                String pwd = mTextPassword.getText().toString().trim();
-                boolean res = db.checkUser(user, pwd);
-                if(res)
-                {
-                    Intent MainActivity = new Intent(UserLoginActivity.this,MainActivity.class);
-                    startActivity(MainActivity);
-                }
-                else
-                {
-                    Toast.makeText(UserLoginActivity.this,"Error de inicio de sesión",Toast.LENGTH_SHORT).show();
-                }*/
             }
         });
     }
 
     private void checkUser(String user, String pwd) {
-
-
         rutasNarAPI.loggin("0", user, pwd).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -87,8 +68,10 @@ public class UserLoginActivity extends AppCompatActivity {
                     if (user.getIdUsuario().length() > 0){
                         db.addUser(user);
                         db.close();
+
                         Intent MainActivity = new Intent(UserLoginActivity.this,MainActivity.class);
                         startActivity(MainActivity);
+
                         finish();
                     }
                     else{

@@ -28,19 +28,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="298dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/post_it_background"
-        android:paddingLeft="30sp"
-        android:paddingTop="10sp"
-        android:text="Evento de ejemplo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
-
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/floatingActionsMenu"
         android:layout_width="wrap_content"
@@ -76,5 +63,18 @@
             app:fab_title="Eventos" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_postits"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:elevation="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

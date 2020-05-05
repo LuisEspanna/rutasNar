@@ -45,4 +45,10 @@ public class User {
     public String toString() {
         return String.format("{id: %s, nombre: %s, clave: %s}", idUsuario, nomUsuario, claveUsuario);
     }
+
+    public User(String idUsuario, String nomUsuario, String claveUsuario) {
+        this.idUsuario = idUsuario;
+        this.nomUsuario = nomUsuario;
+        this.claveUsuario = claveUsuario;
+    }
 }

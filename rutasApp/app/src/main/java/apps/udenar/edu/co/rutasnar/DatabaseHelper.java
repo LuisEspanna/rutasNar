@@ -71,4 +71,27 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
         return false;
     }
+
+    public User getCurrentUser(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = String.format("SELECT * FROM %s", TABLE_NAME);
+        User user = null;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()){
+            String id = cursor.getString(0);
+
+            if(id != null){
+                String nom = cursor.getString(1);
+                String key = cursor.getString(2);
+
+                if(id.compareTo("0")!=0){
+                    user = new User(id, nom, key);
+                }
+            }
+        }
+
+        return user;
+    }
 }

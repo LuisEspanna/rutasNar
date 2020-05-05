@@ -22,6 +22,11 @@ const { getRoutes } = require('../database/manager');
 const { newRoutes } = require('../database/manager');
 const { editRoutes } = require('../database/manager');
 const { deleteRoutes } = require('../database/manager');
+//---------------------------------------------------------- Rutas
+const { getActivity } = require('../database/manager');
+const { newActivity } = require('../database/manager');
+const { deleteActivity } = require('../database/manager');
+
 
 const fs=require('fs');
 
@@ -105,5 +110,10 @@ router.get('/municipios', async (req, res)=>{
         console.log("Error");
     }
 });
+
+//----------------------------------------------- Actividades
+router.get('/api/activity', getActivity);
+router.post('/api/activity', newActivity);
+router.delete('/api/activity', deleteActivity);
 
 module.exports = router;

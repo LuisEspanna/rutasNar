@@ -47,26 +47,6 @@ public class UserRegisterActivity extends AppCompatActivity {
 
                 if (pass.equals(passR))createUser(username, pass);
                 else Toast.makeText(UserRegisterActivity.this,"Las contraseñas no coinciden...", Toast.LENGTH_SHORT).show();
-
-                /*
-                String user = mTextUsername.getText().toString().trim();
-                String pwd = mTextPassword.getText().toString().trim();
-                String cnf_pwd = mTextCnfPassword.getText().toString().trim();
-                if(pwd.equals(cnf_pwd)){
-                    long val = db.addUser(user,pwd);
-                    if(val > 0){
-                        Toast.makeText(UserRegisterActivity.this,"Te has registrado", Toast.LENGTH_SHORT).show();
-                        Intent moveToLogin = new Intent(UserRegisterActivity.this,UserLoginActivity.class);
-                        startActivity(moveToLogin);
-                    }
-                    else{
-                        Toast.makeText(UserRegisterActivity.this,"Ha ocurrido un error en el proceso de registro",Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else{
-                    Toast.makeText(UserRegisterActivity.this,"Las contraseñas no coinciden",Toast.LENGTH_SHORT).show();
-                }
-                 */
             }
         });
 
