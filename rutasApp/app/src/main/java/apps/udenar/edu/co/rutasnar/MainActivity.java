@@ -62,11 +62,11 @@ public class MainActivity extends AppCompatActivity {
 
         if(user == null)return;
 
-        rutasNarAPI.getPostit(user.getIdUsuario(), "", "").enqueue(new Callback<List<Postit>>() {
+        rutasNarAPI.postit(user.getIdUsuario(), "", "", "").enqueue(new Callback<List<Postit>>() {
             @Override
             public void onResponse(Call<List<Postit>> call, Response<List<Postit>> response) {
                 if (response.isSuccessful()){
-                    Log.d("NOTICIAS", "getPostits: " + response.toString());
+                    Log.d("NOTICIAS", "getPostits: " + response.body());
                 }
             }
 

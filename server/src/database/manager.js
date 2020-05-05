@@ -242,11 +242,13 @@ const newActivity = async(req, res)=>{
         console.log(req.body);
 
         if(req.body.id_usuario != undefined){
-            if(req.body.id_ruta != ""){
-                
-            }
-            else if(req.body.id_evento != ""){
-                
+            let json = req.body;
+            let id = new Date().getTime();
+
+            if(req.body.nom_actividad != ""){
+                const response = await pool.query(`INSERT INTO 
+                ACTIVIDADES(id_actividad, id_usuario, nom_actividad, id_ruta, id_evento) 
+                VALUES ('${id}' , '${json.id_usuario}', '${json.nom_actividad}', '${json.id_ruta}', '${json.id_evento}')`);
             }
             else{
                 const response = await pool.query(`SELECT * FROM ACTIVIDADES WHERE ID_USUARIO LIKE '${req.body.id_usuario}'`);
@@ -255,9 +257,7 @@ const newActivity = async(req, res)=>{
             }
         }
         else if(req.body.id_usuario === undefined){
-            const response = await pool.query(`SELECT * FROM ACTIVIDADES`);
-            res.setHeader('Content-Type', 'application/json');
-            res.status(200).json(response.rows);
+            res.status(404).send("404");
         }
     } catch (e) {
         console.log(e);

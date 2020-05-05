@@ -36,7 +36,8 @@ public interface RutasNarAPI {
 
     @POST("activity")
     @FormUrlEncoded
-    Call<List<Postit>> getPostit(@Field("id_usuario") String idUser,
-                                 @Field("id_evento") String idEvent,
-                                 @Field("id_ruta") String idRoute);
+    Call<List<Postit>> postit(@Field("id_usuario") String idUser,
+                                 @Field("nom_actividad") String nomActivity,
+                                 @Field("id_ruta") String idRoute,
+                                 @Field("id_evento") String idEvent);
 }

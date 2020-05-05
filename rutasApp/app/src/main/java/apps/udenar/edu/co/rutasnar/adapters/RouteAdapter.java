@@ -17,8 +17,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+import apps.udenar.edu.co.rutasnar.ApiUtils;
+import apps.udenar.edu.co.rutasnar.DatabaseHelper;
 import apps.udenar.edu.co.rutasnar.R;
+import apps.udenar.edu.co.rutasnar.interfaces.RutasNarAPI;
+import apps.udenar.edu.co.rutasnar.model.Postit;
 import apps.udenar.edu.co.rutasnar.model.Route;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder>{
 
@@ -45,7 +52,8 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder>{
         h.btn_item_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "No disponible :(", Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext, "No disponible :(", Toast.LENGTH_LONG).show();
+                saveRoute(ApiUtils.getCurrentUser(mContext).getIdUsuario(), r.getNom_ruta(), r.getId_ruta());
             }
         });
 
@@ -54,6 +62,22 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder>{
         h.txt_item_time.setText(r.getTiempo_ruta());
         h.txt_municipio.setText(r.getId_municipio());
     }
+
+    private void saveRoute(String idUsuario, String nom_ruta, String id_ruta) {
+        RutasNarAPI rutasNarAPI = ApiUtils.getAPIService();
+        rutasNarAPI.postit(idUsuario, nom_ruta, id_ruta, "").enqueue(new Callback<List<Postit>>() {
+            @Override
+            public void onResponse(Call<List<Postit>> call, Response<List<Postit>> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(mContext, "Ruta guardada :D", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Postit>> call, Throwable t) {}
+        });
+    }
+
 
     @Override
     public int getItemCount() {

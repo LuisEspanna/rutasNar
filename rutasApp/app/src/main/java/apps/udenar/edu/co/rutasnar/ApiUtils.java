@@ -1,6 +1,9 @@
 package apps.udenar.edu.co.rutasnar;
 
+import android.content.Context;
+
 import apps.udenar.edu.co.rutasnar.interfaces.RutasNarAPI;
+import apps.udenar.edu.co.rutasnar.model.User;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -14,5 +17,10 @@ public class ApiUtils {
 
     public static RutasNarAPI getAPIService(){
         return RetrofitClient.getClient(BASE_URL).create(RutasNarAPI.class);
+    }
+
+    public static User getCurrentUser(Context context){
+        DatabaseHelper db = new DatabaseHelper(context);
+        return db.getCurrentUser();
     }
 }

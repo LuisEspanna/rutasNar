@@ -60,6 +60,6 @@ public class Postit {
     @NonNull
     @Override
     public String toString() {
-        return String.format("{id_actividad: %s, nom_actividad: %s}", id_actividad, nom_actividad);
+        return String.format("{id_actividad: %s, id_usuario: %s, nom_actividad: %s, id_ruta: %s, id_evento: %s}", id_actividad,id_usuario, nom_actividad, id_ruta, id_evento);
     }
 }
