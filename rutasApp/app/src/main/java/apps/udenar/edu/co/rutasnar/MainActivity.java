@@ -1,6 +1,8 @@
 package apps.udenar.edu.co.rutasnar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerPostits = findViewById(R.id.recycler_postits);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerPostits.setLayoutManager(linearLayoutManager);
+        new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recyclerPostits);
 
         mPostits = new ArrayList<>();
         getPostits();
@@ -93,4 +96,23 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         getPostits();
     }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            Postit p = mPostits.get(viewHolder.getAdapterPosition());
+            //Agregar codigo para eliminar un postit
+            //
+            //
+            //...
+            mPostits.remove(p);
+            positAdapter.notifyDataSetChanged();
+        }
+    };
+
 }
