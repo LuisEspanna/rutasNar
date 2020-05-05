@@ -249,9 +249,11 @@ const newActivity = async(req, res)=>{
                 const response = await pool.query(`INSERT INTO 
                 ACTIVIDADES(id_actividad, id_usuario, nom_actividad, id_ruta, id_evento) 
                 VALUES ('${id}' , '${json.id_usuario}', '${json.nom_actividad}', '${json.id_ruta}', '${json.id_evento}')`);
+                res.setHeader('Content-Type', 'application/json');
+                res.status(200).json(json);
             }
             else{
-                const response = await pool.query(`SELECT * FROM ACTIVIDADES WHERE ID_USUARIO LIKE '${req.body.id_usuario}'`);
+                const response = await pool.query(`SELECT * FROM ACTIVIDADES WHERE ID_USUARIO LIKE '${json.id_usuario}'`);
                 res.setHeader('Content-Type', 'application/json');
                 res.status(200).json(response.rows);
             }
@@ -260,6 +262,8 @@ const newActivity = async(req, res)=>{
             res.status(404).send("404");
         }
     } catch (e) {
+        res.setHeader('Content-Type', 'application/json');
+        res.status(500).json({message:e});
         console.log(e);
     }    
 } 

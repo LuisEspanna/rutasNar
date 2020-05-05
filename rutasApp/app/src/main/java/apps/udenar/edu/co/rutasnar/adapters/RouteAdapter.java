@@ -71,6 +71,9 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder>{
                 if(response.isSuccessful()){
                     Toast.makeText(mContext, "Ruta guardada :D", Toast.LENGTH_LONG).show();
                 }
+                else{
+                    Toast.makeText(mContext, "Ya existe...", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override

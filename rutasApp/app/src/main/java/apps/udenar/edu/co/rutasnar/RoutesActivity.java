@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import apps.udenar.edu.co.rutasnar.adapters.EventAdapter;
+import apps.udenar.edu.co.rutasnar.adapters.PostitAdapter;
 import apps.udenar.edu.co.rutasnar.adapters.RouteAdapter;
 import apps.udenar.edu.co.rutasnar.interfaces.RutasNarAPI;
 import apps.udenar.edu.co.rutasnar.model.Event;

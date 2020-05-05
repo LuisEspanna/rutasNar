@@ -1,6 +1,7 @@
 package apps.udenar.edu.co.rutasnar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -10,8 +11,11 @@ import android.view.View;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import apps.udenar.edu.co.rutasnar.adapters.PostitAdapter;
+import apps.udenar.edu.co.rutasnar.adapters.RouteAdapter;
 import apps.udenar.edu.co.rutasnar.interfaces.RutasNarAPI;
 import apps.udenar.edu.co.rutasnar.model.Postit;
 import apps.udenar.edu.co.rutasnar.model.User;
@@ -26,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerPostits;
     private RutasNarAPI rutasNarAPI;
     private DatabaseHelper dbHelper;
+    private List<Postit> mPostits;
+    private PostitAdapter positAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +53,16 @@ public class MainActivity extends AppCompatActivity {
         btn_eventos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(MainActivity.this, EventsActivity.class));
-                getPostits();
+                startActivity(new Intent(MainActivity.this, EventsActivity.class));
             }
         });
 
-        
-        
+        recyclerPostits = findViewById(R.id.recycler_postits);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerPostits.setLayoutManager(linearLayoutManager);
+
+        mPostits = new ArrayList<>();
+        getPostits();
     }
 
     private void getPostits() {
@@ -67,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<Postit>> call, Response<List<Postit>> response) {
                 if (response.isSuccessful()){
                     Log.d("NOTICIAS", "getPostits: " + response.body());
+                    mPostits.clear();
+                    mPostits.addAll(response.body());
+                    positAdapter = new PostitAdapter(MainActivity.this, mPostits);
+                    recyclerPostits.setAdapter(positAdapter);
                 }
             }
 
