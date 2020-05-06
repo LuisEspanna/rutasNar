@@ -1,6 +1,7 @@
 package apps.udenar.edu.co.rutasnar.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 import apps.udenar.edu.co.rutasnar.ApiUtils;
+import apps.udenar.edu.co.rutasnar.EventActivity;
 import apps.udenar.edu.co.rutasnar.R;
 import apps.udenar.edu.co.rutasnar.interfaces.RutasNarAPI;
 import apps.udenar.edu.co.rutasnar.model.Event;
@@ -55,6 +57,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             public void onClick(View v) {
                 //Toast.makeText(mContext, "No disponible :(", Toast.LENGTH_LONG).show();
                 saveEvent(ApiUtils.getCurrentUser(mContext).getIdUsuario(), e.getNom_evento(), e.getId_evento());
+            }
+        });
+
+        holder.btn_item_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(mContext, EventActivity.class);
+                it.putExtras(e.toBundle());
+                mContext.startActivity(it);
             }
         });
 

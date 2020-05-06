@@ -75,7 +75,9 @@ const deleteUser = async(req, res)=>{
 const getEvents = async(req, res)=>{
     try {
         console.log(req.body);
-        let str_query = `SELECT * FROM EVENTOS`;
+        //let str_query = `SELECT * FROM EVENTOS`;
+        let str_query = `select id_evento, nom_municipio as id_municipio, nom_evento, desc_evento, img_evento, fecha_evento, disponible, eventos.latitud, eventos.longitud from
+        eventos join municipios on eventos.id_municipio = municipios.id_municipio`;
         const response = await pool.query(str_query);
         res.setHeader('Content-Type', 'application/json');
         res.status(200);

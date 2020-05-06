@@ -1,5 +1,7 @@
 package apps.udenar.edu.co.rutasnar.model;
 
+import android.os.Bundle;
+
 import java.util.Map;
 
 import apps.udenar.edu.co.rutasnar.ApiUtils;
@@ -108,5 +110,30 @@ public class Event {
             return desc_evento.substring(0, 200) + "...";
         }
         return desc_evento;
+    }
+
+    public Bundle toBundle(){
+        /*
+        private String id_evento;
+        private String id_municipio;
+        private String nom_evento;
+        private String desc_evento;
+        private String img_evento;
+        private String fecha_evento;
+        private String disponible;
+        private String latitud;
+        private String longitud;
+        */
+
+        Bundle b = new Bundle();
+        b.putString("id_evento", id_evento);
+        b.putString("id_municipio", id_municipio);
+        b.putString("nom_evento", nom_evento);
+        b.putString("desc_evento", desc_evento);
+        b.putString("img_evento", getImg_evento());
+        b.putString("fecha_evento", fecha_evento);
+        b.putString("disponible", disponible);
+
+        return b;
     }
 }

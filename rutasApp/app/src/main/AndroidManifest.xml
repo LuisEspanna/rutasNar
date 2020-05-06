@@ -15,8 +15,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".RouteActivity"
-            android:theme="@style/AppTheme.NoActionBar2"></activity>
+        <activity android:name=".EventActivity"
+            android:theme="@style/AppTheme.NoActionBar2" ></activity>
+        <activity
+            android:name=".RouteActivity"
+            android:theme="@style/AppTheme.NoActionBar2" />
         <activity android:name=".RoutesActivity" />
         <activity android:name=".EventsActivity" />
         <activity
