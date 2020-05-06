@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.List;
 import apps.udenar.edu.co.rutasnar.adapters.EventAdapter;
 import apps.udenar.edu.co.rutasnar.interfaces.RutasNarAPI;
 import apps.udenar.edu.co.rutasnar.model.Event;
+import apps.udenar.edu.co.rutasnar.model.Municipality;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,6 +28,7 @@ public class EventsActivity extends AppCompatActivity {
     RecyclerView recyclerEvents;
     private List<Event> eventList;
     private EventAdapter eventAdapter;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,15 @@ public class EventsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_events);
 
         setTitle("Eventos");
+
+        spinner = findViewById(R.id.spinner);
+
+        String []info = {"Pasto", "Encano", "Ipiales"};
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, info);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        spinner.setAdapter(spinnerArrayAdapter);
+
 
         recyclerEvents = findViewById(R.id.recycler_routes);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());

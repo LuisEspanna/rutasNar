@@ -3,6 +3,7 @@ package apps.udenar.edu.co.rutasnar.interfaces;
 import java.util.List;
 
 import apps.udenar.edu.co.rutasnar.model.Event;
+import apps.udenar.edu.co.rutasnar.model.Municipality;
 import apps.udenar.edu.co.rutasnar.model.Postit;
 import apps.udenar.edu.co.rutasnar.model.Route;
 import apps.udenar.edu.co.rutasnar.model.User;
@@ -20,6 +21,9 @@ public interface RutasNarAPI {
 
     @GET("routes")
     Call<List<Route>> getRoutes();
+
+    @GET("municipality")
+    Call<List<Municipality>> getMunicipality();
 
     @POST("users")
     @FormUrlEncoded
