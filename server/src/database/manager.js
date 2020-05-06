@@ -276,6 +276,14 @@ const deleteActivity = async(req, res)=>{
     try {
         console.log("Actividad elimiada");
         console.log(req.body);
+
+        let str_query = `delete from actividades where id_actividad like '${req.body.id_actividad}'`;
+        //console.log(str_query);
+
+        const response = await pool.query(str_query);
+
+        res.status(200).json({id_actividad:"", id_usuario:"", nom_actividad:"", id_ruta:"", id_evento:""});
+
     } catch (e) {
         console.log(e);
     }    

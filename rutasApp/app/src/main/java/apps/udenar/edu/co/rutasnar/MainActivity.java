@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
@@ -117,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             Postit p = mPostits.get(viewHolder.getAdapterPosition());
+            deletePosit(p, MainActivity.this);
             //Agregar codigo para eliminar un postit
             //
             //
@@ -125,5 +128,20 @@ public class MainActivity extends AppCompatActivity {
             positAdapter.notifyDataSetChanged();
         }
     };
+
+    private void deletePosit(Postit p, Context context) {
+        RutasNarAPI rutasNarAPI = ApiUtils.getAPIService();
+        rutasNarAPI.deletePostit(p.getId_actividad()).enqueue(new Callback<List<Postit>>() {
+            @Override
+            public void onResponse(Call<List<Postit>> call, Response<List<Postit>> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(context, "Evento eliminado", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Postit>> call, Throwable t) {}
+        });
+    }
 
 }

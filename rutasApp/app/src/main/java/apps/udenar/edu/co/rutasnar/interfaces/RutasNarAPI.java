@@ -8,6 +8,7 @@ import apps.udenar.edu.co.rutasnar.model.Postit;
 import apps.udenar.edu.co.rutasnar.model.Route;
 import apps.udenar.edu.co.rutasnar.model.User;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -44,4 +45,11 @@ public interface RutasNarAPI {
                                  @Field("nom_actividad") String nomActivity,
                                  @Field("id_ruta") String idRoute,
                                  @Field("id_evento") String idEvent);
+
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE" , path = "activity",  hasBody = true)
+    Call<List<Postit>> deletePostit(@Field("id_actividad") String idActivity);
+
+
 }
