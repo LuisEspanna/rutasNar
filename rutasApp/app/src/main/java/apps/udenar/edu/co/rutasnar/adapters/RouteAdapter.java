@@ -1,6 +1,7 @@
 package apps.udenar.edu.co.rutasnar.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import apps.udenar.edu.co.rutasnar.ApiUtils;
 import apps.udenar.edu.co.rutasnar.R;
+import apps.udenar.edu.co.rutasnar.RouteActivity;
 import apps.udenar.edu.co.rutasnar.interfaces.RutasNarAPI;
 import apps.udenar.edu.co.rutasnar.model.Postit;
 import apps.udenar.edu.co.rutasnar.model.Route;
@@ -53,6 +55,15 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder>{
             public void onClick(View v) {
                 //Toast.makeText(mContext, "No disponible :(", Toast.LENGTH_LONG).show();
                 saveRoute(ApiUtils.getCurrentUser(mContext).getIdUsuario(), r.getNom_ruta(), r.getId_ruta());
+            }
+        });
+
+        h.btn_item_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(mContext, RouteActivity.class);
+                it.putExtras(r.toBundle());
+                mContext.startActivity(it);
             }
         });
 

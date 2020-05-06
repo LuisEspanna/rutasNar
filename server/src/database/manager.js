@@ -168,7 +168,9 @@ const deleteMuni = async(req, res)=>{
 //--------------------------------------------------------------------------Rutas
 const getRoutes = async(req, res)=>{
     try {
-        let str_query = `SELECT * FROM RUTAS`;
+        //let str_query = `SELECT * FROM RUTAS`;
+        let str_query = `select id_ruta, nom_municipio as id_municipio, nom_ruta, desc_ruta, img_ruta, tiempo_ruta from
+        rutas join municipios on rutas.id_municipio = municipios.id_municipio`;
         const response = await pool.query(str_query);
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(response.rows);

@@ -1,5 +1,7 @@
 package apps.udenar.edu.co.rutasnar.model;
 
+import android.os.Bundle;
+
 import java.util.Map;
 
 import apps.udenar.edu.co.rutasnar.ApiUtils;
@@ -67,5 +69,17 @@ public class Route {
 
     public void setTiempo_ruta(String tiempo_ruta) {
         this.tiempo_ruta = tiempo_ruta;
+    }
+
+    public Bundle toBundle(){
+        Bundle b = new Bundle();
+        b.putString("id_ruta", id_ruta);
+        b.putString("id_municipio", id_municipio);
+        b.putString("nom_ruta", nom_ruta);
+        b.putString("desc_ruta", desc_ruta);
+        b.putString("img_ruta", getImg_ruta());
+        b.putString("tiempo_ruta", tiempo_ruta);
+
+        return b;
     }
 }
