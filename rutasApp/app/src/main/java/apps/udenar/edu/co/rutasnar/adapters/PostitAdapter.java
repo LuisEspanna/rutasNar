@@ -1,6 +1,8 @@
 package apps.udenar.edu.co.rutasnar.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import apps.udenar.edu.co.rutasnar.ApiUtils;
+import apps.udenar.edu.co.rutasnar.EventActivity;
+import apps.udenar.edu.co.rutasnar.MainActivity;
 import apps.udenar.edu.co.rutasnar.R;
+import apps.udenar.edu.co.rutasnar.RouteActivity;
+import apps.udenar.edu.co.rutasnar.interfaces.RutasNarAPI;
+import apps.udenar.edu.co.rutasnar.model.Event;
 import apps.udenar.edu.co.rutasnar.model.Postit;
+import apps.udenar.edu.co.rutasnar.model.Route;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PostitAdapter extends RecyclerView.Adapter<PostitAdapter.ViewHolder>{
     private Context mContext;
@@ -39,8 +51,59 @@ public class PostitAdapter extends RecyclerView.Adapter<PostitAdapter.ViewHolder
         h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "CLick", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "CLick", Toast.LENGTH_SHORT).show();
+                if(p.getId_evento().length()>0){
+                    getFavoriteEvent(p.getId_evento());
+                }else{
+                    getFavoriteRoute(p.getId_ruta());
+                }
             }
+        });
+    }
+
+    private void getFavoriteEvent(String idEvent) {
+        RutasNarAPI rutasNarAPI = ApiUtils.getAPIService();
+        rutasNarAPI.getEvent(idEvent).enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                if (response.isSuccessful()){
+                    Log.d("NOTICIAS", "getEvent: " + response.body());
+                    List<Event> res = response.body();
+
+                    if(res.size() > 0){
+                        Event e = res.get(0);
+                        Intent it = new Intent(mContext, EventActivity.class);
+                        it.putExtras(e.toBundle());
+                        mContext.startActivity(it);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable t) {}
+        });
+    }
+
+    private void getFavoriteRoute(String idRoute) {
+        RutasNarAPI rutasNarAPI = ApiUtils.getAPIService();
+        rutasNarAPI.getRoute(idRoute).enqueue(new Callback<List<Route>>() {
+            @Override
+            public void onResponse(Call<List<Route>> call, Response<List<Route>> response) {
+                if (response.isSuccessful()){
+                    Log.d("NOTICIAS", "getRoute: " + response.body().toString());
+                    List<Route> res = response.body();
+
+                    if(res.size() > 0){
+                        Route r = res.get(0);
+                        Intent it = new Intent(mContext, RouteActivity.class);
+                        it.putExtras(r.toBundle());
+                        mContext.startActivity(it);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Route>> call, Throwable t) {}
         });
     }
 

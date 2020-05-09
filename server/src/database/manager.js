@@ -89,17 +89,30 @@ const getEvents = async(req, res)=>{
 
 const newEvents = async(req, res)=>{
     try {
-        //console.log("Evento:\n" + JSON.stringify(req.body));
+        let str_query = "";
         let json = req.body;
-        let id = new Date();
-        id = id.getTime();
-        let str_query = `INSERT INTO 
-        EVENTOS(id_evento, id_municipio, nom_evento, desc_evento, img_evento, fecha_evento, disponible, latitud, longitud) VALUES 
-        ('${id}','${json.id_municipio}','${json.nom_evento}','${json.desc_evento}','${req.file.originalname}','${json.fecha_evento}','${json.disponible}','${json.latitud}', '${json.longitud}');`;
-        //console.log(req.file);
-        const response = await pool.query(str_query);
-        console.log(response);
-        res.render('regresar.ejs', {title:'Evento', message:"Evento creado exitosamente", str_url:'/eventos'});
+        
+        if (json.id_evento != undefined){
+            console.log("Evento consultado");
+            //str_query = `SELECT * FROM EVENTOS WHERE id_evento like '${json.id_evento}'`;
+            str_query = `select id_evento, nom_municipio as id_municipio, nom_evento, desc_evento, img_evento, fecha_evento, disponible, eventos.latitud, eventos.longitud from
+            eventos join municipios on eventos.id_municipio = municipios.id_municipio WHERE id_evento like '${json.id_evento}'`;
+            const response = await pool.query(str_query);
+            res.status(200);
+            res.json(response.rows);
+        }
+        else{
+            let id = new Date();
+            id = id.getTime();
+            str_query = `INSERT INTO 
+            EVENTOS(id_evento, id_municipio, nom_evento, desc_evento, img_evento, fecha_evento, disponible, latitud, longitud) VALUES 
+            ('${id}','${json.id_municipio}','${json.nom_evento}','${json.desc_evento}','${req.file.originalname}','${json.fecha_evento}','${json.disponible}','${json.latitud}', '${json.longitud}');`;
+            //console.log(req.file);
+            const response = await pool.query(str_query);
+            console.log(response);
+            res.render('regresar.ejs', { title: 'Evento', message: "Evento creado exitosamente", str_url: '/eventos' });
+        }
+        //console.log("Evento:\n" + JSON.stringify(req.body));
     } catch (e) {
         console.log(e);
     }    
@@ -183,22 +196,35 @@ const getRoutes = async(req, res)=>{
 
 const newRoutes = async(req, res)=>{
     try {
-        console.log(req.body);
+        let str_query = "";
         let json = req.body;
-        let id = new Date();
-        id = id.getTime();
-        let str_query = `INSERT INTO RUTAS(ID_RUTA, ID_MUNICIPIO, NOM_RUTA, DESC_RUTA, IMG_RUTA, TIEMPO_RUTA) VALUES
-        ('${id}', '${json.id_municipio}', '${json.nom_ruta}', '${json.desc_ruta}', '${req.file.originalname}', '${json.tiempo_ruta} ${json.tipo_tiempo}')`;
-        const response = await pool.query(str_query);
-        
-        let coord = eval(json.txt_coordenadas);
-        coord.forEach(elem => {
-            str_query = `select nuevaCoordenada('${id}', '${elem.lat}', '${elem.lon}');`;
-            pool.query(str_query);
-            console.log(str_query);
-        });
-        
-        res.render('regresar.ejs', {title:'Rutas', message:"Ruta creada exitosamente", str_url:'/rutas'});
+
+        if (json.id_ruta != undefined){
+            console.log("Ruta consultada");
+            //str_query = `SELECT * FROM RUTAS WHERE id_ruta like '${json.id_ruta}'`;
+            str_query = `select id_ruta, nom_municipio as id_municipio, nom_ruta, desc_ruta, img_ruta, tiempo_ruta from
+            rutas join municipios on rutas.id_municipio = municipios.id_municipio where id_ruta like '${json.id_ruta}'`;
+            const response = await pool.query(str_query);
+            res.status(200);
+            res.json(response.rows);
+        }
+        else{
+            console.log(req.body);
+            let id = new Date();
+            id = id.getTime();
+            str_query = `INSERT INTO RUTAS(ID_RUTA, ID_MUNICIPIO, NOM_RUTA, DESC_RUTA, IMG_RUTA, TIEMPO_RUTA) VALUES
+            ('${id}', '${json.id_municipio}', '${json.nom_ruta}', '${json.desc_ruta}', '${req.file.originalname}', '${json.tiempo_ruta} ${json.tipo_tiempo}')`;
+            const response = await pool.query(str_query);
+
+            let coord = eval(json.txt_coordenadas);
+            coord.forEach(elem => {
+                str_query = `select nuevaCoordenada('${id}', '${elem.lat}', '${elem.lon}');`;
+                pool.query(str_query);
+                console.log(str_query);
+            });
+
+            res.render('regresar.ejs', { title: 'Rutas', message: "Ruta creada exitosamente", str_url: '/rutas' });
+        }
     } catch (e) {
         console.log(e);
     }    

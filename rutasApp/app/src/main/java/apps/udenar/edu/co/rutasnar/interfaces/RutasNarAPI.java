@@ -20,8 +20,16 @@ public interface RutasNarAPI {
     @GET("events")
     Call<List<Event>> getEvents();
 
+    @POST("events")
+    @FormUrlEncoded
+    Call<List<Event>> getEvent(@Field("id_evento") String idEvent);
+
     @GET("routes")
     Call<List<Route>> getRoutes();
+
+    @POST("routes")
+    @FormUrlEncoded
+    Call<List<Route>> getRoute(@Field("id_ruta") String idRoute);
 
     @GET("municipality")
     Call<List<Municipality>> getMunicipality();
