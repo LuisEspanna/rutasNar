@@ -2,7 +2,10 @@ package apps.udenar.edu.co.rutasnar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +34,37 @@ public class EventActivity extends AppCompatActivity {
         lbl_date = findViewById(R.id.lbl_event_date);
         lbl_place = findViewById(R.id.lbl_event_place);
 
+        webView = findViewById(R.id.webview_event);
+        webView.getSettings().setDomStorageEnabled(true);
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setAllowContentAccess(true);
+        settings.setAppCacheEnabled(true);
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        settings.setAllowFileAccessFromFileURLs(true);
+
+        settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true);
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(false);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        settings.setDomStorageEnabled(true);
+
+
+        //--Caché
+        settings.setAppCacheEnabled(true);
+        //webView.setRendererPriorityPolicy(RENDERER_PRIORITY_BOUND, true);
+
+        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else {
+            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
         Bundle b = getIntent().getExtras();
 
         if (b != null){
@@ -48,6 +82,8 @@ public class EventActivity extends AppCompatActivity {
             lbl_date.setText(fecha_evento);
             lbl_desc.setText(desc_evento);
             lbl_place.setText(id_municipio);
+
+            webView.loadUrl(ApiUtils.MAP_URL_EVENTS + id_evento);
         }
     }
 }

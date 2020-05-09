@@ -131,6 +131,23 @@ const deleteEvents = async(req, res)=>{
     }    
 } 
 
+const showEvent = async(req, res)=>{
+    try {
+        console.log("Mostrar ruta");
+        
+        let str_query = `select latitud, longitud from eventos where id_evento like '${req.params.valor}'`;
+        //console.log(str_query);
+
+        const response = await pool.query(str_query);
+
+        //res.status(200).json(response.rows);
+        res.render('mapa.ejs', {coordenadas: JSON.stringify(response.rows)});
+
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
 //------------------------------------------------------- Municipios
 const getMuni = async(req, res)=>{
     try {
@@ -316,6 +333,24 @@ const deleteActivity = async(req, res)=>{
 } 
 
 
+const showRoute = async(req, res)=>{
+    try {
+        console.log("Mostrar ruta");
+        
+        let str_query = `select latitud, longitud from coordenadas where id_ruta like '${req.params.valor}'`;
+        //console.log(str_query);
+
+        const response = await pool.query(str_query);
+
+        //res.status(200).json(response.rows);
+        res.render('mapa.ejs', { coordenadas: JSON.stringify(response.rows)});
+
+    } catch (e) {
+        console.log(e);
+    }    
+} 
+
+
 module.exports = {
     validateUser,
     getUsers,
@@ -341,6 +376,9 @@ module.exports = {
 
     getActivity,
     newActivity,
-    deleteActivity
+    deleteActivity,
+
+    showRoute, 
+    showEvent
 }
 

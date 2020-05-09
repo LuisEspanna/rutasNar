@@ -1,0 +1,33 @@
+<html>
+<body> 
+        <div id="mapdiv"></div> 
+        <script src="http://www.openlayers.org/api/OpenLayers.js"></script> 
+        <script> 
+                map = new OpenLayers.Map("mapdiv"); 
+                map.addLayer(new OpenLayers.Layer.OSM()); 
+                 
+                var puntos = <%-coordenadas %> ; 
+                
+                
+                 
+                var data = []; 
+                for (let i = 0; i < puntos.length; i++) { 
+                  data.push(new OpenLayers.LonLat( puntos[i].longitud ,puntos[i].latitud ) 
+                      .transform( 
+                        new OpenLayers.Projection("EPSG:4326"), 
+                        map.getProjectionObject() 
+                      ) 
+                  );       
+                }    
+                       
+                var zoom=11; 
+                var markers = new OpenLayers.Layer.Markers( "Markers" ); 
+                map.addLayer(markers); 
+                 
+                for (let i = 0; i < data.length; i++) { 
+                  markers.addMarker(new OpenLayers.Marker(data[i]));       
+                } 
+                map.setCenter (data[0], zoom); 
+        </script> 
+        </body>
+</html>;

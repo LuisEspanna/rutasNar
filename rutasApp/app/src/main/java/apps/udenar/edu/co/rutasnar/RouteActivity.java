@@ -2,8 +2,11 @@ package apps.udenar.edu.co.rutasnar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +23,7 @@ public class RouteActivity extends AppCompatActivity {
     private TextView lbl_descrip;
     private TextView lbl_municipio;
     private TextView lbl_tiempo;
+    private WebView webView;
 
 
     @Override
@@ -33,6 +37,37 @@ public class RouteActivity extends AppCompatActivity {
 
         lbl_municipio = findViewById(R.id.txt_route_mun);
         lbl_tiempo = findViewById(R.id.lbl_route_time);
+
+        webView = findViewById(R.id.webview_route);
+        webView.getSettings().setDomStorageEnabled(true);
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setAllowContentAccess(true);
+        settings.setAppCacheEnabled(true);
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        settings.setAllowFileAccessFromFileURLs(true);
+
+        settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true);
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(false);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        settings.setDomStorageEnabled(true);
+
+
+        //--Caché
+        settings.setAppCacheEnabled(true);
+        //webView.setRendererPriorityPolicy(RENDERER_PRIORITY_BOUND, true);
+
+        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else {
+            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
 
         if(getIntent().getExtras() != null){
             Bundle b = getIntent().getExtras();
@@ -49,6 +84,8 @@ public class RouteActivity extends AppCompatActivity {
             lbl_descrip.setText(desc_ruta);
             lbl_municipio.setText(id_municipio);
             lbl_tiempo.setText(tiempo_ruta);
+
+            webView.loadUrl(ApiUtils.MAP_URL_ROUTES + id_ruta);
         }
 
         btn_favorite = findViewById(R.id.btn_route_favorite);
@@ -62,4 +99,12 @@ public class RouteActivity extends AppCompatActivity {
         });*/
 
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webView.destroy();
+    }
+
 }
