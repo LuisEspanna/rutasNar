@@ -135,7 +135,7 @@ const deleteEvents = async(req, res)=>{
 const getMuni = async(req, res)=>{
     try {
         console.log("Municipio:\n" + req.body);
-        let str_query = `SELECT * FROM MUNICIPIOS`;
+        let str_query = `SELECT * FROM MUNICIPIOS order by nom_municipio`;
         const response = await pool.query(str_query);
         res.status(200).json(response.rows);
     } catch (e) {
