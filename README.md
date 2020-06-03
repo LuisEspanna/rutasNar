@@ -1,7 +1,7 @@
 # Rutas del sur
 Aplicación móvil que permite conocer la cultura de la región de Nariño por medio de la oferta de una serie de rutas de exploración y eventos relacionados al turismo y exploración.
 
-##Primera configuracion de entorno
+Primera configuracion de entorno
 ```bash
 #Si es la primera vez en lanzar el servidor node, se debe instalar los paquetes así
 #Entrar a la carpeta server y abrir una consola, ingresar el comando:
@@ -9,14 +9,14 @@ Aplicación móvil que permite conocer la cultura de la región de Nariño por m
 npm install
 ```
 
-#Comandos para poner en marcha el servidor
+Comandos para poner en marcha el servidor
 
 ```bash
 #Entrar a la carpeta server y abrir una consola, ingresar el comando:
 npm run dev
 ```
 
-#Requisitos
+Requisitos
 
 ```
 1.Tener instalado postgresQL
