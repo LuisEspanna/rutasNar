@@ -42,12 +42,17 @@ const getUsers = async(req, res)=>{
 }
 
 const newUser = async(req, res)=>{
+    console.log("new user");
     try {
         console.log("new user");
         let infoJson = req.body;
         infoJson.id_usuario = new Date().getTime();
         console.log(req.body);
-       // res.setHeader(201);
+
+        let str_query = `INSERT INTO USUARIOS(ID_USUARIO, NOM_USUARIO, CLAVE_USUARIO) VALUES ('${infoJson.id_usuario}','${infoJson.nom_usuario}','${infoJson.clave_usuario}')`;
+        console.log(str_query);
+        const response = await pool.query(str_query);
+      
         res.json(req.body);
     } catch (e) {
         console.log(e);

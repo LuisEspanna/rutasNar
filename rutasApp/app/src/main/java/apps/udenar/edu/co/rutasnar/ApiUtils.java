@@ -8,12 +8,16 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiUtils {
-    //public static final String BASE_URL = "181.55.121.253:8880/";
-    //public static final String IMAGES_URL = "http://181.55.121.253:8880/public/uploads/";
-    public static final String BASE_URL = "http://192.168.0.14:8880/api/";
+    public static final String BASE_URL = "http://181.55.121.253:8880/api/";
+    public static final String IMAGES_URL = "http://181.55.121.253:8880/public/uploads/";
+    public static final String MAP_URL_ROUTES = "http://181.55.121.253:8880/rutas/";
+    public static final String MAP_URL_EVENTS = "http://181.55.121.253:8880/eventos/";
+
+    /*
     public static final String IMAGES_URL = "http://192.168.0.14:8880/public/uploads/";
     public static final String MAP_URL_ROUTES = "http://192.168.0.14:8880/rutas/";
     public static final String MAP_URL_EVENTS = "http://192.168.0.14:8880/eventos/";
+    * */
 
     public ApiUtils() {}
 

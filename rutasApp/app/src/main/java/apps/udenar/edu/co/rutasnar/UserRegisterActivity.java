@@ -61,12 +61,16 @@ public class UserRegisterActivity extends AppCompatActivity {
                     User u = response.body();
 
                     DatabaseHelper db = new DatabaseHelper(UserRegisterActivity.this);
+                    db.resetDB();
                     db.addUser(u);
                     db.close();
 
                     Intent MainActivity = new Intent(UserRegisterActivity.this,MainActivity.class);
                     startActivity(MainActivity);
                     finish();
+                }
+                else{
+                    Log.d("NOTICIAS", "Error ");
                 }
             }
 
